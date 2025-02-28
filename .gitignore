@@ -47,3 +47,6 @@ android/fastlane/report.xml
 android/app/firebase_login_credentials.json
 fastlane/README.md
 fastlane/report.xml
+
+# FVM Version Cache
+.fvm/
