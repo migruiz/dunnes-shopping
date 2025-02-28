@@ -1,4 +1,5 @@
 import 'package:dunnes_shopping/ProductFoundWidget.dart';
+import 'package:dunnes_shopping/ProductNotFoundWidget.dart';
 import 'package:dunnes_shopping/ScanState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,24 +32,18 @@ class ScanWidget extends StatelessWidget {
               ],
             );
           } else if (state is ProductFoundState) {
-            return ProductFoundWidget(productFoundState: state, onConfirm: (){
+            return ProductFoundWidget(
+              productFoundState: state,
+              onConfirm: () {
                 bloc.confirmProduct(state.barcode);
-            });
-            
+              },
+            );
           } else if (state is NotFoundState) {
-            return Column(
-              children: [
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  height: 150,
-                  child: FilteredMobileScannerWidget(
-                    onDetect: (barcode) {
-                      bloc.barcodeFound(barcode: barcode);
-                    },
-                  ),
-                ),
-                Text("Not Found", style: TextStyle(fontSize: 30)),
-              ],
+            return ProductNotFoundWidget(
+              notFoundState: state,
+              onConfirm: () {
+                bloc.linkBarcode(state.barcode);
+              },
             );
           } else if (state is QueryingProductState) {
             return Column(

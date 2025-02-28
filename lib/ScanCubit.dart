@@ -62,4 +62,8 @@ class ScanCubit extends Cubit<ScanState> {
   void confirmProduct(String barcode) {
     emit(ScanningState());
   }
+
+  void linkBarcode(String barcode) {
+    emit(ScanningState());
+  }
 }
