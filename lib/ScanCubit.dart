@@ -20,8 +20,6 @@ class ScanCubit extends Cubit<ScanState> {
         (state is ScannedState) ? (state as ScannedState).barcode : null;
 
     if (previousBarcode != null && previousBarcode == barcode) return;
-    final player = AudioPlayer();
-    await player.play(UrlSource('https://www.soundjay.com/buttons/beep-01a.wav'));
     HapticFeedback.vibrate();
     final barcodes = {
       '5099874079736': '100806893',
@@ -36,15 +34,23 @@ class ScanCubit extends Cubit<ScanState> {
     }
     emit(QueryingProductState(barcode: barcode));
 
-    final response = await http.get(
-      Uri.parse(
-        'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/258/preview?q=$productId',
+    final player = AudioPlayer();
+    final results = await Future.wait([
+      http.get(
+        Uri.parse(
+          'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/258/preview?q=$productId',
+        ),
       ),
-    );
+      player.play(UrlSource('https://www.soundjay.com/buttons/beep-01a.wav')),
+    ]);
+
+    final response = results[0] as http.Response;
+
     final json = jsonDecode(response.body) as Map<String, dynamic>;
     final name = json['products'][0]['name'];
     final imageUrl = json['products'][0]['image']['default'];
     final price = json['products'][0]['priceNumeric'];
+
     emit(
       ProductFoundState(
         name: name,
