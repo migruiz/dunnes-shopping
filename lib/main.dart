@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'barcode_scanner_simple.dart';
+import 'package:keep_screen_on/keep_screen_on.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  KeepScreenOn.turnOn();
   runApp(
     const MaterialApp(
       title: 'Mobile Scanner Example',

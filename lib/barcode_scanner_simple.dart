@@ -6,12 +6,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'ScanCubit.dart';
 
-
-
-
-
-
-
 class ScanWidget extends StatelessWidget {
   const ScanWidget({super.key});
 
@@ -20,19 +14,41 @@ class ScanWidget extends StatelessWidget {
     return BlocProvider(
       create: (_) => ScanCubit()..init(),
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Children')
-          ),
-          body: BlocBuilder<ScanCubit, ScanState>(
-            builder: (context, state) {
-              if (state is ScanningState) {
-                return const Text('Scanning...');
-              } else if (state is BarcodeFounsState) {
-                return const Text('Found...');
-              }
-              return Container();
-            },
-          )),
+        appBar: AppBar(title: const Text('Children')),
+        body: BlocBuilder<ScanCubit, ScanState>(
+          builder: (context, state) {
+            if (state is ScanningState) {
+              return Stack(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 200,
+                    child: MobileScanner(onDetect: (e){
+
+                    }),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      height: 400,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                         Text("Scan something!",)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else if (state is BarcodeFounsState) {
+              return const Text('Found...');
+            }
+            return Container();
+          },
+        ),
+      ),
     );
   }
 }
