@@ -31,7 +31,8 @@ class ScanCubit extends Cubit<ScanState> {
       emit(NotFoundState(barcode: barcode));
       return;
     }
-
+    emit(QueryingProductState(barcode: barcode));
+    
     final response = await http.get(
       Uri.parse(
         'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/258/preview?q=$productId',
@@ -42,7 +43,7 @@ class ScanCubit extends Cubit<ScanState> {
     final imageUrl = json['products'][0]['image']['default'];
     final price = json['products'][0]['priceNumeric'];
     emit(
-      BarcodeFoundState(
+      ProductFoundState(
         name: name,
         barcode: barcode,
         imageUrl: imageUrl,

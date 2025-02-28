@@ -23,7 +23,7 @@ class ScanWidget extends StatelessWidget {
                 children: [
                   Container(
                     alignment: Alignment.bottomCenter,
-                    height: 200,
+                    height: 150,
                     child: MobileScanner(
                       onDetect: (e) {
                         bloc.barcodeFound(
@@ -34,12 +34,12 @@ class ScanWidget extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (state is BarcodeFoundState) {
+            } else if (state is ProductFoundState) {
               return Column(
                 children: [
                   Container(
                     alignment: Alignment.bottomCenter,
-                    height: 200,
+                    height: 150,
                     child: MobileScanner(
                       onDetect: (e) {
                         bloc.barcodeFound(
@@ -53,19 +53,16 @@ class ScanWidget extends StatelessWidget {
                     height: 200,
                     child: Image.network(state.imageUrl),
                   ),
-                   Text(state.name, style: TextStyle(fontSize: 30)),
-                   Text('€${state.price}', style: TextStyle(fontSize: 30)),
-                  
+                  Text(state.name, style: TextStyle(fontSize: 30)),
+                  Text('€${state.price}', style: TextStyle(fontSize: 30)),
                 ],
               );
-              
-            }
-            else if (state is NotFoundState) {
+            } else if (state is NotFoundState) {
               return Column(
                 children: [
                   Container(
                     alignment: Alignment.bottomCenter,
-                    height: 200,
+                    height: 150,
                     child: MobileScanner(
                       onDetect: (e) {
                         bloc.barcodeFound(
@@ -74,11 +71,26 @@ class ScanWidget extends StatelessWidget {
                       },
                     ),
                   ),
-                   Text("Not Found", style: TextStyle(fontSize: 30)),
-                  
+                  Text("Not Found", style: TextStyle(fontSize: 30)),
                 ],
               );
-              
+            } else if (state is QueryingProductState) {
+              return Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 150,
+                    child: MobileScanner(
+                      onDetect: (e) {
+                        bloc.barcodeFound(
+                          barcode: e.barcodes.first.displayValue!,
+                        );
+                      },
+                    ),
+                  ),
+                  Text("Querying...", style: TextStyle(fontSize: 30)),
+                ],
+              );
             }
             return Container();
           },

@@ -13,11 +13,15 @@ class NotFoundState extends ScannedState {
   NotFoundState({required super.barcode});
 }
 
-class BarcodeFoundState extends ScannedState {
+class QueryingProductState extends ScannedState {
+  QueryingProductState({required super.barcode});
+}
+
+class ProductFoundState extends ScannedState {
   final String name;
   final String imageUrl;
   final double price;
-  BarcodeFoundState({
+  ProductFoundState({
     required this.name,
     required this.imageUrl,
     required this.price,
