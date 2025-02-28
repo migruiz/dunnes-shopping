@@ -1,3 +1,4 @@
+import 'package:dunnes_shopping/ProductFoundWidget.dart';
 import 'package:dunnes_shopping/ScanState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,58 +31,10 @@ class ScanWidget extends StatelessWidget {
               ],
             );
           } else if (state is ProductFoundState) {
-            return Column(
-              children: [
-                Image.network(state.imageUrl),
-                Text(state.name, style: const TextStyle(fontSize: 20)),
-                Text(
-                  '€${state.price}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
-                  ),
-                ),
-                Row(
-                  children: [
-                                        ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white, // background color
-                        foregroundColor: Colors.red, // text color
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        'CANCEL',
-                        style: const TextStyle(fontSize: 30),
-                      ),
-                    ),
-                    Spacer(),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green, // background color
-                        foregroundColor: Colors.white, // text color
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {
-                        bloc.confirmProduct(state.barcode);
-                      },
-                      child: Text(
-                        'CONFIRM',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
-              ],
-            );
+            return ProductFoundWidget(productFoundState: state, onConfirm: (){
+                bloc.confirmProduct(state.barcode);
+            });
+            
           } else if (state is NotFoundState) {
             return Column(
               children: [
