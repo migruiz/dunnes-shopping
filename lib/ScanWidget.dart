@@ -38,7 +38,7 @@ class ScanWidget extends StatelessWidget {
                   '€${state.price}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 40,
+                    fontSize: 50,
                   ),
                 ),
                 Row(
