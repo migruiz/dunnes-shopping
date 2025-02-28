@@ -1,9 +1,8 @@
 import 'package:dunnes_shopping/ScanState.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 
+import 'FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ScanCubit.dart';
 
 class ScanWidget extends StatelessWidget {
@@ -24,7 +23,7 @@ class ScanWidget extends StatelessWidget {
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 150,
-                    child: MobileScanner(
+                    child: FilteredMobileScannerWidget(
                       onDetect: (e) {
                         bloc.barcodeFound(
                           barcode: e.barcodes.first.displayValue!,
@@ -40,7 +39,7 @@ class ScanWidget extends StatelessWidget {
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 150,
-                    child: MobileScanner(
+                    child: FilteredMobileScannerWidget(
                       onDetect: (e) {
                         bloc.barcodeFound(
                           barcode: e.barcodes.first.displayValue!,
@@ -72,7 +71,7 @@ class ScanWidget extends StatelessWidget {
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 150,
-                    child: MobileScanner(
+                    child: FilteredMobileScannerWidget(
                       onDetect: (e) {
                         bloc.barcodeFound(
                           barcode: e.barcodes.first.displayValue!,
@@ -89,7 +88,7 @@ class ScanWidget extends StatelessWidget {
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 150,
-                    child: MobileScanner(
+                    child: FilteredMobileScannerWidget(
                       onDetect: (e) {
                         bloc.barcodeFound(
                           barcode: e.barcodes.first.displayValue!,
