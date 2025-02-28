@@ -26,7 +26,7 @@ class ScanWidget extends StatelessWidget {
                     height: 200,
                     child: MobileScanner(
                       onDetect: (e) {
-                        bloc.barcodeFound(e.barcodes.first.displayValue!);
+                        bloc.barcodeFound(barcode: e.barcodes.first.displayValue!);
                       },
                     ),
                   ),
@@ -51,7 +51,7 @@ class ScanWidget extends StatelessWidget {
                     height: 200,
                     child: MobileScanner(
                       onDetect: (e) {
-                        bloc.barcodeFound(e.barcodes.first.displayValue!);
+                        bloc.barcodeFound(barcode: e.barcodes.first.displayValue!);
                       },
                     ),
                   ),
@@ -62,7 +62,7 @@ class ScanWidget extends StatelessWidget {
                       height: 400,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [Text(state.barcode)],
+                        children: [Text(state.name)],
                       ),
                     ),
                   ),

@@ -14,7 +14,10 @@ class ScanCubit extends Cubit<ScanState> {
     emit(ScanningState());
     
   }
-  void barcodeFound(String barcode) async{
+  void barcodeFound({required String barcode}) async{
+    final previousBarcode = (state as BarcodeFoundState?)?.barcode;
+    
+    if (previousBarcode!=null && previousBarcode == barcode) return;
     HapticFeedback.vibrate();
     final barcodes = {
       '5056175945542':'100806893',
@@ -22,13 +25,13 @@ class ScanCubit extends Cubit<ScanState> {
     };
     final productId = barcodes[barcode];
     if (productId == null) {
-      emit(BarcodeFoundState(barcode: 'NOT FOUND'));
+      emit(BarcodeFoundState(name: 'NOT FOUND', barcode: barcode));
       return;
     }
 
     final response = await http.get(Uri.parse('https://storefrontgateway.dunnesstoresgrocery.com/api/stores/258/preview?q=$productId'));
     final json = jsonDecode(response.body)  as Map<String, dynamic>;
-    final sd = json['products'][0]['name'];
-    emit(BarcodeFoundState(barcode: sd));
+    final name = json['products'][0]['name'];
+    emit(BarcodeFoundState(name: name, barcode: barcode));
   }
 }
