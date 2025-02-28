@@ -22,7 +22,9 @@ class ScanCubit extends Cubit<ScanState> {
     HapticFeedback.vibrate();
     final barcodes = {
       '5099874079736': '100806893',
-      '5099874343677': '100279329',
+      '22966680304':'100806893',
+      '5056175945542':'100279329',
+      '5099874343677': '100279329'
     };
     final productId = barcodes[barcode];
     if (productId == null) {
