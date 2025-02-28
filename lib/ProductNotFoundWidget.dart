@@ -2,7 +2,7 @@ import 'package:dunnes_shopping/FilteredMobileScanner/ScannerState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'ScanState.dart';
 
 class ProductNotFoundWidget extends StatelessWidget {
@@ -20,6 +20,12 @@ class ProductNotFoundWidget extends StatelessWidget {
     return Column(
       children: [
         Text("Not Found", style: TextStyle(fontSize: 30)),
+        ElevatedButton(
+          onPressed: () async {
+            await launchUrl(Uri.parse('https://www.dunnesstoresgrocery.com/'));
+          },
+          child: Text('Search Dunnes Database'),
+        ),
         Row(
           children: [
             ElevatedButton(
@@ -55,8 +61,6 @@ class ProductNotFoundWidget extends StatelessWidget {
             ),
           ],
         ),
-
-
       ],
     );
   }
