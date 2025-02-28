@@ -1,6 +1,7 @@
 import 'package:dunnes_shopping/ScanState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ScanCubit.dart';
@@ -24,9 +25,9 @@ class ScanWidget extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     height: 150,
                     child: FilteredMobileScannerWidget(
-                      onDetect: (e) {
+                      onDetect: (barcode) {
                         bloc.barcodeFound(
-                          barcode: e.barcodes.first.displayValue!,
+                          barcode: barcode,
                         );
                       },
                     ),
@@ -40,9 +41,9 @@ class ScanWidget extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     height: 150,
                     child: FilteredMobileScannerWidget(
-                      onDetect: (e) {
+                      onDetect: (barcode) {
                         bloc.barcodeFound(
-                          barcode: e.barcodes.first.displayValue!,
+                          barcode: barcode,
                         );
                       },
                     ),
@@ -72,9 +73,9 @@ class ScanWidget extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     height: 150,
                     child: FilteredMobileScannerWidget(
-                      onDetect: (e) {
+                      onDetect: (barcode) {
                         bloc.barcodeFound(
-                          barcode: e.barcodes.first.displayValue!,
+                          barcode: barcode,
                         );
                       },
                     ),
@@ -89,9 +90,9 @@ class ScanWidget extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     height: 150,
                     child: FilteredMobileScannerWidget(
-                      onDetect: (e) {
+                      onDetect: (barcode) {
                         bloc.barcodeFound(
-                          barcode: e.barcodes.first.displayValue!,
+                          barcode: barcode,
                         );
                       },
                     ),
