@@ -1,7 +1,6 @@
 import 'package:dunnes_shopping/ScanState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ScanCubit.dart';
@@ -13,9 +12,7 @@ class ScanWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ScanCubit()..init(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Children')),
-        body: BlocBuilder<ScanCubit, ScanState>(
+      child: BlocBuilder<ScanCubit, ScanState>(
           builder: (context, state) {
             final bloc = BlocProvider.of<ScanCubit>(context);
             if (state is ScanningState) {
@@ -26,9 +23,7 @@ class ScanWidget extends StatelessWidget {
                     height: 150,
                     child: FilteredMobileScannerWidget(
                       onDetect: (barcode) {
-                        bloc.barcodeFound(
-                          barcode: barcode,
-                        );
+                        bloc.barcodeFound(barcode: barcode);
                       },
                     ),
                   ),
@@ -37,32 +32,14 @@ class ScanWidget extends StatelessWidget {
             } else if (state is ProductFoundState) {
               return Column(
                 children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 150,
-                    child: FilteredMobileScannerWidget(
-                      onDetect: (barcode) {
-                        bloc.barcodeFound(
-                          barcode: barcode,
-                        );
-                      },
+                  Image.network(state.imageUrl),
+                  Text(state.name, style: const TextStyle(fontSize: 20)),
+                  Text(
+                    '€${state.price}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
                     ),
-                  ),
-                  ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          state.name,
-                          style: const TextStyle(),
-                        ),
-                        Text(
-                          '€${state.price}',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                      ],
-                    ),
-                    leading: ClipOval(child: Image.network(state.imageUrl)),
                   ),
                 ],
               );
@@ -74,9 +51,7 @@ class ScanWidget extends StatelessWidget {
                     height: 150,
                     child: FilteredMobileScannerWidget(
                       onDetect: (barcode) {
-                        bloc.barcodeFound(
-                          barcode: barcode,
-                        );
+                        bloc.barcodeFound(barcode: barcode);
                       },
                     ),
                   ),
@@ -91,9 +66,7 @@ class ScanWidget extends StatelessWidget {
                     height: 150,
                     child: FilteredMobileScannerWidget(
                       onDetect: (barcode) {
-                        bloc.barcodeFound(
-                          barcode: barcode,
-                        );
+                        bloc.barcodeFound(barcode: barcode);
                       },
                     ),
                   ),
@@ -103,8 +76,7 @@ class ScanWidget extends StatelessWidget {
             }
             return Container();
           },
-        ),
-      ),
+        )
     );
   }
 }
