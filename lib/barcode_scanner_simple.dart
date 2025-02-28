@@ -19,55 +19,66 @@ class ScanWidget extends StatelessWidget {
           builder: (context, state) {
             final bloc = BlocProvider.of<ScanCubit>(context);
             if (state is ScanningState) {
-              return Stack(
+              return Column(
                 children: [
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 200,
                     child: MobileScanner(
                       onDetect: (e) {
-                        bloc.barcodeFound(barcode: e.barcodes.first.displayValue!);
+                        bloc.barcodeFound(
+                          barcode: e.barcodes.first.displayValue!,
+                        );
                       },
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      alignment: Alignment.bottomCenter,
-                      height: 400,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [Text("Scan something!")],
-                      ),
                     ),
                   ),
                 ],
               );
             } else if (state is BarcodeFoundState) {
-              return Stack(
+              return Column(
                 children: [
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 200,
                     child: MobileScanner(
                       onDetect: (e) {
-                        bloc.barcodeFound(barcode: e.barcodes.first.displayValue!);
+                        bloc.barcodeFound(
+                          barcode: e.barcodes.first.displayValue!,
+                        );
                       },
                     ),
                   ),
-                  Align(
+                  Container(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
-                      alignment: Alignment.bottomCenter,
-                      height: 400,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [Text(state.name)],
-                      ),
-                    ),
+                    height: 200,
+                    child: Image.network(state.imageUrl),
                   ),
+                   Text(state.name, style: TextStyle(fontSize: 30)),
+                   Text('€${state.price}', style: TextStyle(fontSize: 30)),
+                  
                 ],
               );
+              
+            }
+            else if (state is NotFoundState) {
+              return Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 200,
+                    child: MobileScanner(
+                      onDetect: (e) {
+                        bloc.barcodeFound(
+                          barcode: e.barcodes.first.displayValue!,
+                        );
+                      },
+                    ),
+                  ),
+                   Text("Not Found", style: TextStyle(fontSize: 30)),
+                  
+                ],
+              );
+              
             }
             return Container();
           },

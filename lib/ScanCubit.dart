@@ -25,7 +25,7 @@ class ScanCubit extends Cubit<ScanState> {
     };
     final productId = barcodes[barcode];
     if (productId == null) {
-      emit(BarcodeFoundState(name: 'NOT FOUND', barcode: barcode, imageUrl: ''));
+      emit(NotFoundState());
       return;
     }
 
@@ -33,6 +33,7 @@ class ScanCubit extends Cubit<ScanState> {
     final json = jsonDecode(response.body)  as Map<String, dynamic>;
     final name = json['products'][0]['name'];
     final imageUrl = json['products'][0]['image']['default'];
-    emit(BarcodeFoundState(name: name, barcode: barcode, imageUrl: imageUrl));
+    final price =json['products'][0]['priceNumeric'];
+    emit(BarcodeFoundState(name: name, barcode: barcode, imageUrl: imageUrl, price: price));
   }
 }
