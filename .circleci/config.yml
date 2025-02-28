@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@2.1.0
+
+jobs:
+  build_android:
+    docker:
+      - image: ghcr.io/cirruslabs/flutter:3.16.4
+    steps:
+      - checkout
+      - run:
+          name: Run Flutter doctor
+          command: flutter doctor
+      - run:
+          name: Build the Android version
+          command: flutter build apk --build-number=$CIRCLE_BUILD_NUM
+      - ruby/install-deps
+      - run:
+          name: fastlane
+          command: |
+            echo $FB_LOGIN_KEY > android/app/firebase_login_credentials.json
+            bundle exec fastlane upload_firebase
+            
+            
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_android:
+          filters:
+            branches:
+              only: master
