@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'ScanState.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ScanCubit extends Cubit<ScanState> {
   ScanCubit() : super(ScanningState());
@@ -20,19 +21,15 @@ class ScanCubit extends Cubit<ScanState> {
         (state is ScannedState) ? (state as ScannedState).barcode : null;
 
     if (previousBarcode != null && previousBarcode == barcode) return;
-    HapticFeedback.vibrate();
-    final barcodes = {
-      '5099874079736': '100806893',
-      '22966680304': '100806893',
-      '5056175945542': '100279329',
-      '5099874343677': '100279329',
-    };
-    final productId = barcodes[barcode];
-    if (productId == null) {
+    emit(QueryingProductState(barcode: barcode));
+
+    final db = FirebaseFirestore.instance;
+    final productResult = await db.collection("barcodes").doc(barcode).get();
+    if (!productResult.exists) {
       emit(NotFoundState(barcode: barcode));
       return;
     }
-    emit(QueryingProductState(barcode: barcode));
+    final productId = productResult.data()!["productId"];
 
     final player = AudioPlayer();
     final results = await Future.wait([
@@ -51,6 +48,7 @@ class ScanCubit extends Cubit<ScanState> {
     final imageUrl = json['products'][0]['image']['default'];
     final price = json['products'][0]['priceNumeric'];
 
+    HapticFeedback.vibrate();
     emit(
       ProductFoundState(
         name: name,
@@ -62,6 +60,6 @@ class ScanCubit extends Cubit<ScanState> {
   }
 
   void confirmProduct(String barcode) {
-     emit(ScanningState());
+    emit(ScanningState());
   }
 }
