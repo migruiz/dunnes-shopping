@@ -48,13 +48,22 @@ class ScanWidget extends StatelessWidget {
                       },
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 200,
-                    child: Image.network(state.imageUrl),
+                  ListTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.name,
+                          style: const TextStyle(),
+                        ),
+                        Text(
+                          '€${state.price}',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ],
+                    ),
+                    leading: ClipOval(child: Image.network(state.imageUrl)),
                   ),
-                  Text(state.name, style: TextStyle(fontSize: 30)),
-                  Text('€${state.price}', style: TextStyle(fontSize: 30)),
                 ],
               );
             } else if (state is NotFoundState) {
