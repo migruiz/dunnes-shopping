@@ -10,4 +10,7 @@ class ScanCubit extends Cubit<ScanState> {
     emit(ScanningState());
     
   }
+  void barcodeFound(String barcode) {
+    emit(BarcodeFoundState(barcode: barcode));
+  }
 }

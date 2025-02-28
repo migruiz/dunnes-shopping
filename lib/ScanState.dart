@@ -6,7 +6,7 @@ class ScanningState extends ScanState{
 
 }
 
-class BarcodeFounsState extends ScanState{
+class BarcodeFoundState extends ScanState{
   final String barcode;
-  BarcodeFounsState({required this.barcode});
+  BarcodeFoundState({required this.barcode});
 }

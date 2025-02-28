@@ -17,15 +17,18 @@ class ScanWidget extends StatelessWidget {
         appBar: AppBar(title: const Text('Children')),
         body: BlocBuilder<ScanCubit, ScanState>(
           builder: (context, state) {
+            final bloc = BlocProvider.of<ScanCubit>(context);
             if (state is ScanningState) {
               return Stack(
                 children: [
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 200,
-                    child: MobileScanner(onDetect: (e){
-
-                    }),
+                    child: MobileScanner(
+                      onDetect: (e) {
+                        bloc.barcodeFound(e.barcodes.first.displayValue!);
+                      },
+                    ),
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -34,16 +37,37 @@ class ScanWidget extends StatelessWidget {
                       height: 400,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                         Text("Scan something!",)
-                        ],
+                        children: [Text("Scan something!")],
                       ),
                     ),
                   ),
                 ],
               );
-            } else if (state is BarcodeFounsState) {
-              return const Text('Found...');
+            } else if (state is BarcodeFoundState) {
+              return Stack(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 200,
+                    child: MobileScanner(
+                      onDetect: (e) {
+                        bloc.barcodeFound(e.barcodes.first.displayValue!);
+                      },
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      height: 400,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [Text(state.barcode)],
+                      ),
+                    ),
+                  ),
+                ],
+              );
             }
             return Container();
           },
