@@ -9,5 +9,6 @@ class ScanningState extends ScanState{
 class BarcodeFoundState extends ScanState{
   final String barcode;
   final String name;
-  BarcodeFoundState({required this.barcode, required this.name});
+  final String imageUrl;
+  BarcodeFoundState({required this.barcode, required this.name, required this.imageUrl});
 }
