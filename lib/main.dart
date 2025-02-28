@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'barcode_scanner_simple.dart';
+import 'ScanWidget.dart';
 import 'package:keep_screen_on/keep_screen_on.dart';
 
 void main() {

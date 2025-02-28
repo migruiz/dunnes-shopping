@@ -25,7 +25,7 @@ class ScanCubit extends Cubit<ScanState> {
     };
     final productId = barcodes[barcode];
     if (productId == null) {
-      emit(NotFoundState());
+      emit(NotFoundState(barcode: barcode));
       return;
     }
 
