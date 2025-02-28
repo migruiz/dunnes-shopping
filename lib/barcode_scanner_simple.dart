@@ -1,7 +1,55 @@
+import 'package:dunnes_shopping/ScanState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import 'ScanCubit.dart';
+
+
+
+
+
+
+
+class ScanWidget extends StatelessWidget {
+  const ScanWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ScanCubit()..init(),
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Children')
+          ),
+          body: BlocBuilder<ScanCubit, ScanState>(
+            builder: (context, state) {
+              if (state is ScanningState) {
+                return const Text('Scanning...');
+              } else if (state is BarcodeFounsState) {
+                return const Text('Found...');
+              }
+              return Container();
+            },
+          )),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 class BarcodeScannerSimple extends StatefulWidget {
   const BarcodeScannerSimple({super.key});
 
@@ -68,3 +116,4 @@ class _BarcodeScannerSimpleState extends State<BarcodeScannerSimple> {
     );
   }
 }
+*/

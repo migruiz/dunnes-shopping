@@ -41,7 +41,7 @@ class MyHome extends StatelessWidget {
             _buildItem(
               context,
               'MobileScanner Simple',
-              const BarcodeScannerSimple(),
+              const ScanWidget(),
             ),
            
           ],
