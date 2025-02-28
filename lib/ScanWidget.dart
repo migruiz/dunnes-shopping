@@ -13,70 +13,109 @@ class ScanWidget extends StatelessWidget {
     return BlocProvider(
       create: (_) => ScanCubit()..init(),
       child: BlocBuilder<ScanCubit, ScanState>(
-          builder: (context, state) {
-            final bloc = BlocProvider.of<ScanCubit>(context);
-            if (state is ScanningState) {
-              return Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 150,
-                    child: FilteredMobileScannerWidget(
-                      onDetect: (barcode) {
-                        bloc.barcodeFound(barcode: barcode);
+        builder: (context, state) {
+          final bloc = BlocProvider.of<ScanCubit>(context);
+          if (state is ScanningState) {
+            return Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 150,
+                  child: FilteredMobileScannerWidget(
+                    onDetect: (barcode) {
+                      bloc.barcodeFound(barcode: barcode);
+                    },
+                  ),
+                ),
+              ],
+            );
+          } else if (state is ProductFoundState) {
+            return Column(
+              children: [
+                Image.network(state.imageUrl),
+                Text(state.name, style: const TextStyle(fontSize: 20)),
+                Text(
+                  '€${state.price}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                  ),
+                ),
+                Row(
+                  children: [
+                                        ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white, // background color
+                        foregroundColor: Colors.red, // text color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        'CANCEL',
+                        style: const TextStyle(fontSize: 30),
+                      ),
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green, // background color
+                        foregroundColor: Colors.white, // text color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        bloc.confirmProduct(state.barcode);
                       },
+                      child: Text(
+                        'CONFIRM',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
+
+                  ],
+                ),
+              ],
+            );
+          } else if (state is NotFoundState) {
+            return Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 150,
+                  child: FilteredMobileScannerWidget(
+                    onDetect: (barcode) {
+                      bloc.barcodeFound(barcode: barcode);
+                    },
                   ),
-                ],
-              );
-            } else if (state is ProductFoundState) {
-              return Column(
-                children: [
-                  Image.network(state.imageUrl),
-                  Text(state.name, style: const TextStyle(fontSize: 20)),
-                  Text(
-                    '€${state.price}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                    ),
+                ),
+                Text("Not Found", style: TextStyle(fontSize: 30)),
+              ],
+            );
+          } else if (state is QueryingProductState) {
+            return Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 150,
+                  child: FilteredMobileScannerWidget(
+                    onDetect: (barcode) {
+                      bloc.barcodeFound(barcode: barcode);
+                    },
                   ),
-                ],
-              );
-            } else if (state is NotFoundState) {
-              return Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 150,
-                    child: FilteredMobileScannerWidget(
-                      onDetect: (barcode) {
-                        bloc.barcodeFound(barcode: barcode);
-                      },
-                    ),
-                  ),
-                  Text("Not Found", style: TextStyle(fontSize: 30)),
-                ],
-              );
-            } else if (state is QueryingProductState) {
-              return Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 150,
-                    child: FilteredMobileScannerWidget(
-                      onDetect: (barcode) {
-                        bloc.barcodeFound(barcode: barcode);
-                      },
-                    ),
-                  ),
-                  Text("Querying...", style: TextStyle(fontSize: 30)),
-                ],
-              );
-            }
-            return Container();
-          },
-        )
+                ),
+                Text("Querying...", style: TextStyle(fontSize: 30)),
+              ],
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }
