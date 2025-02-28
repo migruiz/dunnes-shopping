@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class BarcodeScannerSimple extends StatefulWidget {
@@ -29,6 +30,7 @@ class _BarcodeScannerSimpleState extends State<BarcodeScannerSimple> {
 
   void _handleBarcode(BarcodeCapture barcodes) {
     if (mounted) {
+      HapticFeedback.vibrate();
       setState(() {
         _barcode = barcodes.barcodes.firstOrNull;
       });
@@ -42,9 +44,11 @@ class _BarcodeScannerSimpleState extends State<BarcodeScannerSimple> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          MobileScanner(
-            onDetect: _handleBarcode,
-          ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 200,
+            child: MobileScanner(onDetect: _handleBarcode)
+            ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
