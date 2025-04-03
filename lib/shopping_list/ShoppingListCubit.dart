@@ -9,8 +9,8 @@ import 'ShoppingListState.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ScanCubit extends Cubit<ShoppingListState> {
-  ScanCubit() : super(ScanningState());
+class ShoppingListCubit extends Cubit<ShoppingListState> {
+  ShoppingListCubit() : super(ScanningState());
 
   void init() async {
     emit(ScanningState());

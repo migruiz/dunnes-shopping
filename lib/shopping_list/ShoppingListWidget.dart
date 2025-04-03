@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../FilteredMobileScanner/FilteredMobileScannerWidget.dart';
-import 'ScanCubit.dart';
+import 'ShoppingListCubit.dart';
 
 class ShoppingListWidget extends StatelessWidget {
   const ShoppingListWidget({super.key});
@@ -13,10 +13,10 @@ class ShoppingListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ScanCubit()..init(),
-      child: BlocBuilder<ScanCubit, ShoppingListState>(
+      create: (_) => ShoppingListCubit()..init(),
+      child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
         builder: (context, state) {
-          final bloc = BlocProvider.of<ScanCubit>(context);
+          final bloc = BlocProvider.of<ShoppingListCubit>(context);
           if (state is ScanningState) {
             return Column(
               children: [
