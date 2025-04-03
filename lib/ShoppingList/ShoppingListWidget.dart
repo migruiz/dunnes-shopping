@@ -39,8 +39,8 @@ class ShoppingListWidget extends StatelessWidget {
               onConfirm: (product) {
                 bloc.confirmProduct(state.barcode, product);
               },
-              onCancel: () {
-                bloc.scanNewProduct();
+              onReLink: () {
+                bloc.reLinkProduct(state.barcode);
               },
             );
           } else if (state is ProductNotFoundState) {

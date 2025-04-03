@@ -5,10 +5,10 @@ import '../DunnesProductData.dart';
 class ProductFoundWidget extends StatelessWidget {
   final DunnesProductData dunnesProduct;
   final void Function(DunnesProductData) onConfirm;
-  final void Function() onReLink;
+  final void Function() onCancel;
 
 
-  const ProductFoundWidget({super.key, required this.dunnesProduct, required this.onConfirm, required this.onReLink});
+  const ProductFoundWidget({super.key, required this.dunnesProduct, required this.onConfirm, required this.onCancel});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,9 @@ class ProductFoundWidget extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                onReLink();
+                onCancel();
               },
-              child: Text('RE-LINK', style: const TextStyle(fontSize: 30)),
+              child: Text('CANCEL', style: const TextStyle(fontSize: 30)),
             ),
             Spacer(),
             ElevatedButton(

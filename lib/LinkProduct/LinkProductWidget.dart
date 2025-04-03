@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../ShoppingList/ProductFoundWidget.dart';
 import 'LinkProductState.dart';
+import 'ProductFoundWidget.dart';
 
 class LinkProductWidget extends StatelessWidget {
   final String barcode;
@@ -83,7 +83,7 @@ class LinkProductWidget extends StatelessWidget {
                 bloc.linkProduct(barcode: barcode, productId: product.productId);
               },
               onCancel: () {
-                onCancel();
+               bloc.init(barcode: barcode);
               },
             );
           }

@@ -65,4 +65,8 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   void linkBarcode(String barcode) {
     emit(LinkProductState(barcode:barcode ));
   }
+
+  void reLinkProduct(String barcode) {
+    emit(LinkProductState(barcode:barcode ));
+  }
 }
