@@ -4,10 +4,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LinkProductWidget extends StatelessWidget {
   final String barcode;
+  final void Function() onCancel;
+  final void Function(String) onLinked;
 
   const LinkProductWidget({
     super.key,
-    required this.barcode
+    required this.barcode,
+    required this.onCancel,
+    required this.onLinked
   });
 
   @override
@@ -39,7 +43,9 @@ class LinkProductWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                onCancel();
+              },
               child: Text('CANCEL', style: const TextStyle(fontSize: 30)),
             ),
             Spacer(),
@@ -52,7 +58,7 @@ class LinkProductWidget extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                
+                onLinked(barcode);
               },
               child: Text(
                 'CONFIRM',

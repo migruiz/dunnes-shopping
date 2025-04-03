@@ -58,7 +58,13 @@ class ShoppingListWidget extends StatelessWidget {
             );
           }
           else if (state is LinkProductState) {
-            return LinkProductWidget(barcode: state.barcode);
+            return LinkProductWidget(barcode: state.barcode,
+            onCancel: () {
+              bloc.scanNewProduct();
+            },
+            onLinked: (barcode) {
+              bloc.barcodeFound(barcode: barcode);
+            });
           }
           return Container();
         },
