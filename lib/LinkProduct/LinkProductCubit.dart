@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LinkProductCubit extends Cubit<LinkProductState> {
   LinkProductCubit() : super(StartState());
 
+
   void init({required String barcode}) async {
     emit(InitState( barcode: barcode));
   }
