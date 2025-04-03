@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ScanCubit.dart';
 
-class ScanWidget extends StatelessWidget {
-  const ScanWidget({super.key});
+class ShoppingListWidget extends StatelessWidget {
+  const ShoppingListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

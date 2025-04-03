@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'shopping_list/ScanWidget.dart';
+import 'shopping_list/ShoppingListWidget.dart';
 import 'package:keep_screen_on/keep_screen_on.dart';
 
 void main() async {
@@ -18,7 +18,7 @@ class MyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Dunnes')),
-      body: ScanWidget(),
+      body: ShoppingListWidget(),
     );
   }
 }
