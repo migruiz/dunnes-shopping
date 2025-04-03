@@ -42,11 +42,8 @@ class LinkProductWidget extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final clipboardData = await Clipboard.getData(
-                      Clipboard.kTextPlain,
-                    );
-                    String? clipboardText = clipboardData?.text;
-                    print(clipboardText);
+                    bloc.searchFromClipboard();
+                    
                   },
                   child: Text('Search from Clipboard'),
                 ),

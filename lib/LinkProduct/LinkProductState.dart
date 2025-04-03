@@ -9,3 +9,18 @@ class InitState extends LinkProductState {
   final String barcode;
   InitState({required this.barcode});
 }
+
+
+class ProductFoundState extends LinkProductState {
+  final String name;
+  final String imageUrl;
+  final double price;
+  ProductFoundState({
+    required this.name,
+    required this.imageUrl,
+    required this.price,
+  });
+}
+
+class NotFoundState extends LinkProductState {
+}
