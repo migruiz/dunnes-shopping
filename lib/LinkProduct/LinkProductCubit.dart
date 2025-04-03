@@ -39,6 +39,23 @@ class LinkProductCubit extends Cubit<LinkProductState> {
     final imageUrl = json['products'][0]['image']['default'];
     final price = json['products'][0]['priceNumeric'];
 
-    emit(ProductFoundState(dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price, productId: productId)));
+    emit(
+      ProductFoundState(
+        dunnesProduct: DunnesProductData(
+          name: name,
+          imageUrl: imageUrl,
+          price: price,
+          productId: productId,
+        ),
+      ),
+    );
+  }
+
+  void linkProduct({required String barcode, required String productId}) async {
+    final db = FirebaseFirestore.instance;
+    await db.collection("barcodes").doc(barcode).update({
+      "productId": productId,
+    });
+    emit(LinkedState(barcode: barcode, productId: productId));
   }
 }

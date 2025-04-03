@@ -95,10 +95,10 @@ class LinkProductWidget extends StatelessWidget {
             return ProductFoundWidget(
               dunnesProduct: state.dunnesProduct,
               onConfirm: (product) {
-                
+                bloc.linkProduct(barcode: barcode, productId: product.productId);
               },
               onCancel: () {
-                
+                onCancel();
               },
             );
           }
