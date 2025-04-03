@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'ShoppingListState.dart';
 
 class ProductNotFoundWidget extends StatelessWidget {
-  final NotFoundState notFoundState;
-  final void Function() onConfirm;
+  final String barcodeNotFound;
+  final void Function() onContinue;
+  final void Function(String) onLinkBarcode;
 
   const ProductNotFoundWidget({
     super.key,
-    required this.notFoundState,
-    required this.onConfirm,
+    required this.barcodeNotFound,
+    required this.onContinue,
+    required this.onLinkBarcode,
   });
 
   @override
@@ -18,32 +17,21 @@ class ProductNotFoundWidget extends StatelessWidget {
     return Column(
       children: [
         Text("Not Found", style: TextStyle(fontSize: 30)),
-        ElevatedButton(
-          onPressed: () async {
-            await launchUrl(Uri.parse('https://www.dunnesstoresgrocery.com/'));
-          },
-          child: Text('Search Dunnes Database'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
-            String? clipboardText = clipboardData?.text;
-            print(clipboardText);
-          },
-          child: Text('Search from Clipboard'),
-        ),
+        
         Row(
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white, // background color
-                foregroundColor: Colors.red, // text color
+                foregroundColor: Colors.green, // text color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              onPressed: () {},
-              child: Text('CANCEL', style: const TextStyle(fontSize: 30)),
+              onPressed: () {
+                onContinue();
+              },
+              child: Text('CONTINUE', style: const TextStyle(fontSize: 30)),
             ),
             Spacer(),
             ElevatedButton(
@@ -55,10 +43,10 @@ class ProductNotFoundWidget extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                onConfirm();
+                onLinkBarcode(barcodeNotFound);
               },
               child: Text(
-                'CONFIRM',
+                'SEARCH & LINK',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
