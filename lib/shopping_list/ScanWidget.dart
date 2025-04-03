@@ -1,10 +1,10 @@
-import 'package:dunnes_shopping/ProductFoundWidget.dart';
-import 'package:dunnes_shopping/ProductNotFoundWidget.dart';
-import 'package:dunnes_shopping/ScanState.dart';
+import 'package:dunnes_shopping/shopping_list/ProductFoundWidget.dart';
+import 'package:dunnes_shopping/shopping_list/ProductNotFoundWidget.dart';
+import 'package:dunnes_shopping/shopping_list/ScanState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'FilteredMobileScanner/FilteredMobileScannerWidget.dart';
+import '../FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ScanCubit.dart';
 
 class ScanWidget extends StatelessWidget {
