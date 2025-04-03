@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 
-abstract class ScanState {}
+abstract class ShoppingListState {}
 
-class ScanningState extends ScanState {}
+class ScanningState extends ShoppingListState {}
 
-abstract class ScannedState extends ScanState {
+abstract class ScannedState extends ShoppingListState {
   final String barcode;
   ScannedState({required this.barcode});
 }

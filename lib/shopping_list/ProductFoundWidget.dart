@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ScanState.dart';
+import 'ShoppingListState.dart';
 
 class ProductFoundWidget extends StatelessWidget {
   final ProductFoundState productFoundState;

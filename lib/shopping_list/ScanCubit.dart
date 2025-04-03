@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'ScanState.dart';
+import 'ShoppingListState.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ScanCubit extends Cubit<ScanState> {
+class ScanCubit extends Cubit<ShoppingListState> {
   ScanCubit() : super(ScanningState());
 
   void init() async {
