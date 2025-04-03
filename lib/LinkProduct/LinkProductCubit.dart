@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:dunnes_shopping/DunnesProductData.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -38,6 +39,6 @@ class LinkProductCubit extends Cubit<LinkProductState> {
     final imageUrl = json['products'][0]['image']['default'];
     final price = json['products'][0]['priceNumeric'];
 
-    emit(ProductFoundState(name: name, imageUrl: imageUrl, price: price));
+    emit(ProductFoundState(dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price)));
   }
 }

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:dunnes_shopping/DunnesProductData.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -51,10 +52,8 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     HapticFeedback.vibrate();
     emit(
       ProductFoundState(
-        name: name,
+        dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price),
         barcode: barcode,
-        imageUrl: imageUrl,
-        price: price,
       ),
     );
   }

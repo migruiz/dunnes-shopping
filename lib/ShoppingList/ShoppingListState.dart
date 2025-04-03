@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'package:dunnes_shopping/DunnesProductData.dart';
+
 abstract class ShoppingListState {}
 
 class ScanningState extends ShoppingListState {}
@@ -22,13 +24,9 @@ class QueryingProductState extends ScannedState {
 }
 
 class ProductFoundState extends ScannedState {
-  final String name;
-  final String imageUrl;
-  final double price;
+  final DunnesProductData dunnesProduct;
   ProductFoundState({
-    required this.name,
-    required this.imageUrl,
-    required this.price,
+    required this.dunnesProduct,
     required super.barcode,
   });
 }

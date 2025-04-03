@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../DunnesProductData.dart';
 import 'ShoppingListState.dart';
 
 class ProductFoundWidget extends StatelessWidget {
-  final ProductFoundState productFoundState;
+  final DunnesProductData dunnesProduct;
   final void Function() onConfirm;
 
 
-  const ProductFoundWidget({super.key, required this.productFoundState, required this.onConfirm});
+  const ProductFoundWidget({super.key, required this.dunnesProduct, required this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.network(productFoundState.imageUrl),
-        Text(productFoundState.name, style: const TextStyle(fontSize: 20)),
+        Image.network(dunnesProduct.imageUrl),
+        Text(dunnesProduct.name, style: const TextStyle(fontSize: 20)),
         Text(
-          '€${productFoundState.price}',
+          '€${dunnesProduct.price}',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
         ),
         Row(

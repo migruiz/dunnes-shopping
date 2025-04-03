@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../ShoppingList/ProductFoundWidget.dart';
 import 'LinkProductState.dart';
 
 class LinkProductWidget extends StatelessWidget {
@@ -88,6 +89,14 @@ class LinkProductWidget extends StatelessWidget {
                   ],
                 ),
               ],
+            );
+          }
+          else if (state is ProductFoundState) {
+            return ProductFoundWidget(
+              dunnesProduct: state.dunnesProduct,
+              onConfirm: () {
+                
+              },
             );
           }
           return Container();

@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import '../DunnesProductData.dart';
+
 abstract class LinkProductState {}
 
 class StartState extends LinkProductState {
@@ -12,13 +14,9 @@ class InitState extends LinkProductState {
 
 
 class ProductFoundState extends LinkProductState {
-  final String name;
-  final String imageUrl;
-  final double price;
+  final DunnesProductData dunnesProduct;
   ProductFoundState({
-    required this.name,
-    required this.imageUrl,
-    required this.price,
+    required this.dunnesProduct
   });
 }
 
