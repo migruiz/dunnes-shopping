@@ -1,3 +1,4 @@
+import 'package:dunnes_shopping/LinkProduct/LinkProductWidget.dart';
 import 'package:dunnes_shopping/ShoppingList/ProductFoundWidget.dart';
 import 'package:dunnes_shopping/ShoppingList/ProductNotFoundWidget.dart';
 import 'package:dunnes_shopping/ShoppingList/ShoppingListState.dart';
@@ -39,7 +40,7 @@ class ShoppingListWidget extends StatelessWidget {
                 bloc.confirmProduct(state.barcode);
               },
             );
-          } else if (state is NotFoundState) {
+          } else if (state is ProductNotFoundState) {
             return ProductNotFoundWidget(
               barcodeNotFound: state.barcode,
               onLinkBarcode: (barcode) {
@@ -55,6 +56,9 @@ class ShoppingListWidget extends StatelessWidget {
                 Text("Querying...", style: TextStyle(fontSize: 30)),
               ],
             );
+          }
+          else if (state is LinkProductState) {
+            return LinkProductWidget(barcode: state.barcode);
           }
           return Container();
         },

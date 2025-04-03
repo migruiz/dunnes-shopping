@@ -9,8 +9,12 @@ abstract class ScannedState extends ShoppingListState {
   ScannedState({required this.barcode});
 }
 
-class NotFoundState extends ScannedState {
-  NotFoundState({required super.barcode});
+class ProductNotFoundState extends ScannedState {
+  ProductNotFoundState({required super.barcode});
+}
+
+class LinkProductState extends ScannedState {
+  LinkProductState({required super.barcode});
 }
 
 class QueryingProductState extends ScannedState {

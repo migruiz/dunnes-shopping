@@ -26,7 +26,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     final db = FirebaseFirestore.instance;
     final productResult = await db.collection("barcodes").doc(barcode).get();
     if (!productResult.exists) {
-      emit(NotFoundState(barcode: barcode));
+      emit(ProductNotFoundState(barcode: barcode));
       return;
     }
     final productId = productResult.data()!["productId"];
@@ -64,6 +64,6 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }
 
   void linkBarcode(String barcode) {
-    emit(ScanningState());
+    emit(LinkProductState(barcode:barcode ));
   }
 }
