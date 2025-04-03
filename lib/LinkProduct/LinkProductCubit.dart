@@ -39,6 +39,6 @@ class LinkProductCubit extends Cubit<LinkProductState> {
     final imageUrl = json['products'][0]['image']['default'];
     final price = json['products'][0]['priceNumeric'];
 
-    emit(ProductFoundState(dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price)));
+    emit(ProductFoundState(dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price, productId: productId)));
   }
 }

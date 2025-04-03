@@ -94,7 +94,10 @@ class LinkProductWidget extends StatelessWidget {
           else if (state is ProductFoundState) {
             return ProductFoundWidget(
               dunnesProduct: state.dunnesProduct,
-              onConfirm: () {
+              onConfirm: (product) {
+                
+              },
+              onCancel: () {
                 
               },
             );

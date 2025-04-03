@@ -36,8 +36,11 @@ class ShoppingListWidget extends StatelessWidget {
           } else if (state is ProductFoundState) {
             return ProductFoundWidget(
               dunnesProduct: state.dunnesProduct,
-              onConfirm: () {
-                bloc.confirmProduct(state.barcode);
+              onConfirm: (product) {
+                bloc.confirmProduct(state.barcode, product);
+              },
+              onCancel: () {
+                bloc.scanNewProduct();
               },
             );
           } else if (state is ProductNotFoundState) {

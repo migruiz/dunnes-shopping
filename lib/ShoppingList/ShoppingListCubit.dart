@@ -52,13 +52,13 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     HapticFeedback.vibrate();
     emit(
       ProductFoundState(
-        dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price),
+        dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price, productId: productId),
         barcode: barcode,
       ),
     );
   }
 
-  void confirmProduct(String barcode) {
+  void confirmProduct(String barcode, DunnesProductData product) {
     emit(ScanningState());
   }
 

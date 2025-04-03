@@ -5,10 +5,11 @@ import 'ShoppingListState.dart';
 
 class ProductFoundWidget extends StatelessWidget {
   final DunnesProductData dunnesProduct;
-  final void Function() onConfirm;
+  final void Function(DunnesProductData) onConfirm;
+  final void Function() onCancel;
 
 
-  const ProductFoundWidget({super.key, required this.dunnesProduct, required this.onConfirm});
+  const ProductFoundWidget({super.key, required this.dunnesProduct, required this.onConfirm, required this.onCancel});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,9 @@ class ProductFoundWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                onCancel();
+              },
               child: Text('CANCEL', style: const TextStyle(fontSize: 30)),
             ),
             Spacer(),
@@ -43,7 +46,7 @@ class ProductFoundWidget extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                onConfirm();
+                onConfirm(dunnesProduct);
               },
               child: Text(
                 'CONFIRM',
