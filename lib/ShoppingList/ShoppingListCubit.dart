@@ -13,6 +13,10 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   ShoppingListCubit() : super(ScanningState());
 
   void init() async {
+    scanNewProduct();
+  }
+
+  void scanNewProduct() async {
     emit(ScanningState());
   }
 
