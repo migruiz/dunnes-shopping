@@ -53,7 +53,7 @@ class LinkProductCubit extends Cubit<LinkProductState> {
 
   void linkProduct({required String barcode, required String productId}) async {
     final db = FirebaseFirestore.instance;
-    await db.collection("barcodes").doc(barcode).update({
+    await db.collection("barcodes").doc(barcode).set({
       "productId": productId,
     });
     emit(LinkedState(barcode: barcode, productId: productId));

@@ -10,7 +10,7 @@ import 'LinkProductState.dart';
 class LinkProductWidget extends StatelessWidget {
   final String barcode;
   final void Function() onCancel;
-  final void Function(String) onLinked;
+  final void Function({required String barcode,required String productId}) onLinked;
 
   const LinkProductWidget({
     super.key,
@@ -23,7 +23,12 @@ class LinkProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LinkProductCubit()..init(barcode: barcode),
-      child: BlocBuilder<LinkProductCubit, LinkProductState>(
+      child: BlocConsumer<LinkProductCubit, LinkProductState>(
+        listener: (context, state) {
+          if (state is LinkedState){
+            onLinked(barcode: state.barcode, productId: state.productId);
+          }
+        },
         builder: (context, state) {
           final bloc = BlocProvider.of<LinkProductCubit>(context);
           if (state is InitState) {
@@ -66,26 +71,6 @@ class LinkProductWidget extends StatelessWidget {
                         style: const TextStyle(fontSize: 30),
                       ),
                     ),
-                    Spacer(),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green, // background color
-                        foregroundColor: Colors.white, // text color
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {
-                        onLinked(barcode);
-                      },
-                      child: Text(
-                        'CONFIRM',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],
@@ -101,6 +86,9 @@ class LinkProductWidget extends StatelessWidget {
                 onCancel();
               },
             );
+          }
+          else if (state is NotFoundState) {
+            return Text("Not Found");
           }
           return Container();
         },

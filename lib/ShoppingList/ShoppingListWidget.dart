@@ -49,25 +49,24 @@ class ShoppingListWidget extends StatelessWidget {
               onLinkBarcode: (barcode) {
                 bloc.linkBarcode(barcode);
               },
-              onContinue: (){
+              onContinue: () {
                 bloc.scanNewProduct();
               },
             );
           } else if (state is QueryingProductState) {
             return Column(
-              children: [
-                Text("Querying...", style: TextStyle(fontSize: 30)),
-              ],
+              children: [Text("Querying...", style: TextStyle(fontSize: 30))],
             );
-          }
-          else if (state is LinkProductState) {
-            return LinkProductWidget(barcode: state.barcode,
-            onCancel: () {
-              bloc.scanNewProduct();
-            },
-            onLinked: (barcode) {
-              bloc.barcodeFound(barcode: barcode);
-            });
+          } else if (state is LinkProductState) {
+            return LinkProductWidget(
+              barcode: state.barcode,
+              onCancel: () {
+                bloc.scanNewProduct();
+              },
+              onLinked: ({required String barcode, required String productId}) {
+                bloc.barcodeFound(barcode: barcode);
+              },
+            );
           }
           return Container();
         },
