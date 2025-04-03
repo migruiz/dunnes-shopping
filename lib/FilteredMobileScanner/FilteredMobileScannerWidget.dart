@@ -14,14 +14,14 @@ class FilteredMobileScannerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ScannerCubit()..init(),
-      child: BlocBuilder<ScannerCubit, ScannerState>(
+      child: BlocConsumer<ScannerCubit, ScannerState>(
+        listener: (context, state) {
+          if (state is ResultState) {
+            onDetect(state.barcode);
+          }
+        },
         builder: (context, state) {
           final bloc = BlocProvider.of<ScannerCubit>(context);
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (state is ResultState){
-              onDetect(state.barcode);
-            }
-          });
           return MobileScanner(
             onDetect: (e) => {bloc.newScan(e.barcodes.first.displayValue!)},
           );
