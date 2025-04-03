@@ -48,15 +48,6 @@ class ScanWidget extends StatelessWidget {
           } else if (state is QueryingProductState) {
             return Column(
               children: [
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  height: 150,
-                  child: FilteredMobileScannerWidget(
-                    onDetect: (barcode) {
-                      bloc.barcodeFound(barcode: barcode);
-                    },
-                  ),
-                ),
                 Text("Querying...", style: TextStyle(fontSize: 30)),
               ],
             );

@@ -9,7 +9,8 @@ class ScannerCubit extends Cubit<ScannerState> {
   init() {}
 
   newScan(String barcode) {
-    if (state is InitState || state is ResultState) {
+    print('nard scanned: ' + barcode);
+    if (state is InitState) {
       emit(
         ScannedState(firstEmission: DateTime.now(), count: 0, barcode: barcode),
       );
@@ -25,22 +26,9 @@ class ScannerCubit extends Cubit<ScannerState> {
             barcode: barcode,
           ),
         );
-        return;
-      }
-      if (DateTime.now().difference(prevScannedState.firstEmission).inSeconds >
-          2) {
-        emit(
-          ScannedState(
-            firstEmission: DateTime.now(),
-            count: 0,
-            barcode: barcode,
-          ),
-        );
-        return;
-      }
-      if (DateTime.now().difference(prevScannedState.firstEmission).inSeconds <
-          2) {
-        if (prevScannedState.count > 3) {
+      } else {
+        if (prevScannedState.count > 2) {
+          print('nard ResultState: ' + barcode);
           emit(ResultState(barcode: barcode));
         } else {
           emit(
@@ -51,7 +39,6 @@ class ScannerCubit extends Cubit<ScannerState> {
             ),
           );
         }
-        return;
       }
     }
   }

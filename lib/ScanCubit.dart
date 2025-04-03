@@ -17,10 +17,6 @@ class ScanCubit extends Cubit<ScanState> {
   }
 
   void barcodeFound({required String barcode}) async {
-    final previousBarcode =
-        (state is ScannedState) ? (state as ScannedState).barcode : null;
-
-    if (previousBarcode != null && previousBarcode == barcode) return;
     emit(QueryingProductState(barcode: barcode));
 
     final db = FirebaseFirestore.instance;
