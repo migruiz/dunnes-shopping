@@ -37,17 +37,24 @@ class ShoppingListWidget extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: state.products.length,
                       itemBuilder: (BuildContext context, int index) {
                         final product = state.products[index];
                         return ListTile(
-                          title: Text("${product.price}"),
+                          title: Text("${product.name}"),
                           leading: ClipOval(
                             child: Image.network(product.imageUrl),
                           ),
+                          trailing: Text(
+                            "€${product.price}",
+                            style: const TextStyle(fontSize: 32),
+                          ),
                           onTap: () async {},
                         );
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider(color: Colors.grey, height: 1);
                       },
                     ),
                   ),
