@@ -14,72 +14,88 @@ class ShoppingListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-return Scaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('Dunnes')),
       body: BlocProvider(
-      create: (_) => ShoppingListCubit()..init(),
-      child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
-        builder: (context, state) {
-          final bloc = BlocProvider.of<ShoppingListCubit>(context);
-          if (state is ScanningState) {
-            return Column(
-              children: [
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  height: 150,
-                  child: FilteredMobileScannerWidget(
-                    onDetect: (barcode) {
-                      bloc.barcodeFound(barcode: barcode);
-                    },
+        create: (_) => ShoppingListCubit()..init(),
+        child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
+          builder: (context, state) {
+            final bloc = BlocProvider.of<ShoppingListCubit>(context);
+            if (state is ScanningState) {
+              return Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 150,
+                    child: FilteredMobileScannerWidget(
+                      onDetect: (barcode) {
+                        bloc.barcodeFound(barcode: barcode);
+                      },
+                    ),
                   ),
-                ),
-              ],
-            );
-          } else if (state is ProductFoundState) {
-            return ProductFoundWidget(
-              dunnesProduct: state.dunnesProduct,
-              onConfirm: (product) {
-                bloc.confirmProduct(state.barcode, product);
-              },
-              onReLink: () {
-                bloc.reLinkProduct(state.barcode);
-              },
-            );
-          } else if (state is ProductNotFoundState) {
-            return ProductNotFoundWidget(
-              barcodeNotFound: state.barcode,
-              onLinkBarcode: (barcode) {
-                bloc.linkBarcode(barcode);
-              },
-              onContinue: () {
-                bloc.scanNewProduct();
-              },
-            );
-          } else if (state is QueryingProductState) {
-            return Column(
-              children: [Text("Querying...", style: TextStyle(fontSize: 30))],
-            );
-          } else if (state is LinkProductState) {
-            return LinkProductWidget(
-              barcode: state.barcode,
-              onCancel: () {
-                bloc.scanNewProduct();
-              },
-              onLinked: ({required String barcode, required String productId}) {
-                bloc.barcodeFound(barcode: barcode);
-              },
-            );
-          }
-          return Container();
-        },
+                ],
+              );
+            } else if (state is ProductFoundState) {
+              return ProductFoundWidget(
+                dunnesProduct: state.dunnesProduct,
+                onConfirm: (product) {
+                  bloc.confirmProduct(state.barcode, product);
+                },
+                onReLink: () {
+                  bloc.reLinkProduct(state.barcode);
+                },
+              );
+            } else if (state is ProductNotFoundState) {
+              return ProductNotFoundWidget(
+                barcodeNotFound: state.barcode,
+                onLinkBarcode: (barcode) {
+                  bloc.linkBarcode(barcode);
+                },
+                onContinue: () {
+                  bloc.scanNewProduct();
+                },
+              );
+            } else if (state is QueryingProductState) {
+              return Column(
+                children: [Text("Querying...", style: TextStyle(fontSize: 30))],
+              );
+            } else if (state is LinkProductState) {
+              return LinkProductWidget(
+                barcode: state.barcode,
+                onCancel: () {
+                  bloc.scanNewProduct();
+                },
+                onLinked: ({
+                  required String barcode,
+                  required String productId,
+                }) {
+                  bloc.barcodeFound(barcode: barcode);
+                },
+              );
+            }
+            return Container();
+          },
+        ),
       ),
-    ),
-      bottomSheet: Text("hola"),
-    );
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: ListTile(
+          title: Text(
+            "Total € 24.99",
+            style: const TextStyle( fontSize: 32),
+          ),
+          leading: Icon(
+            Icons.calculate_rounded,
+            color: Colors.black,
+            size: 48.0,
+            semanticLabel: 'Text to announce in accessibility modes',
+          ),
+          onTap: () async {
 
-    
+          },
+        ),
+      ),
+    );
   }
 }
 
