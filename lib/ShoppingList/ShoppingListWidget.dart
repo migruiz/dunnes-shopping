@@ -36,15 +36,21 @@ class ShoppingListWidget extends StatelessWidget {
                       },
                     ),
                   ),
-/*
-                  ListView.builder(
-                    itemCount: state.products.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final product = state.products[index];
-                      return Text(product.name);
-                    },
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.products.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final product = state.products[index];
+                        return ListTile(
+                          title: Text("${product.price}"),
+                          leading: ClipOval(
+                            child: Image.network(product.imageUrl),
+                          ),
+                          onTap: () async {},
+                        );
+                      },
+                    ),
                   ),
-                  */
                 ],
               );
             } else if (state is ProductFoundState) {
@@ -97,7 +103,11 @@ class ShoppingListWidget extends StatelessWidget {
         ),
       ),
       bottomSheet: Padding(
-        padding: const EdgeInsets.only(top: 10),
+        padding: EdgeInsets.only(
+          bottom:
+              MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.of(context).padding.bottom,
+        ),
         child: ListTile(
           title: Text("Total € 24.99", style: const TextStyle(fontSize: 32)),
           leading: Icon(
