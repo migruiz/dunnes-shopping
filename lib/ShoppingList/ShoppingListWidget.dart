@@ -36,6 +36,15 @@ class ShoppingListWidget extends StatelessWidget {
                       },
                     ),
                   ),
+/*
+                  ListView.builder(
+                    itemCount: state.products.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final product = state.products[index];
+                      return Text(product.name);
+                    },
+                  ),
+                  */
                 ],
               );
             } else if (state is ProductFoundState) {
