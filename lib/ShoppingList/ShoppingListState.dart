@@ -2,17 +2,19 @@
 
 import 'package:dunnes_shopping/DunnesProductData.dart';
 
-abstract class ShoppingListState {}
+abstract class ShoppingListState {
+  final List<DunnesProductData> products;
+  ShoppingListState({required this.products});
+}
 
 class ShoppingState extends ShoppingListState {
-  final List<DunnesProductData> products;
-  ShoppingState({required this.products});
+  
+  ShoppingState({required super.products});
 }
 
 abstract class ScannedState extends ShoppingListState {
   final String barcode;
-  final List<DunnesProductData> products;
-  ScannedState({required this.barcode, required this.products});
+  ScannedState({required this.barcode, required super.products});
 }
 
 class ProductNotFoundState extends ScannedState {
