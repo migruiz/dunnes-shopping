@@ -9,122 +9,126 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ShoppingListCubit.dart';
 
+class MyWidget extends StatelessWidget {
+  final ShoppingListState loadedState;
+  final ShoppingListCubit bloc;
+
+  const MyWidget({super.key, required this.loadedState, required this.bloc});
+  @override
+  Widget build(BuildContext context) {
+    final state = loadedState;
+    if (state is ShoppingState) {
+      return Column(
+        children: [
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 150,
+            child: FilteredMobileScannerWidget(
+              onDetect: (barcode) {
+                bloc.barcodeFound(barcode: barcode, products: state.products);
+              },
+            ),
+          ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: state.products.length,
+              itemBuilder: (BuildContext context, int index) {
+                final product = state.products[index];
+                return ListTile(
+                  title: Text("${product.name}"),
+                  leading: ClipOval(child: Image.network(product.imageUrl)),
+                  trailing: Text(
+                    "€${product.price}",
+                    style: const TextStyle(fontSize: 32),
+                  ),
+                  onTap: () async {},
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(color: Colors.grey, height: 1);
+              },
+            ),
+          ),
+        ],
+      );
+    } else if (state is ProductFoundState) {
+      return ProductFoundWidget(
+        dunnesProduct: state.dunnesProduct,
+        onConfirm: (product) {
+          bloc.confirmProduct(
+            barcode: state.barcode,
+            product: product,
+            products: state.products,
+          );
+        },
+        onReLink: () {
+          bloc.reLinkProduct(barcode: state.barcode, products: state.products);
+        },
+      );
+    } else if (state is ProductNotFoundState) {
+      return ProductNotFoundWidget(
+        barcodeNotFound: state.barcode,
+        onLinkBarcode: (barcode) {
+          bloc.linkBarcode(barcode: barcode, products: state.products);
+        },
+        onContinue: () {
+          bloc.continueShopping(products: state.products);
+        },
+      );
+    } else if (state is QueryingProductState) {
+      return Column(
+        children: [Text("Querying...", style: TextStyle(fontSize: 30))],
+      );
+    } else if (state is LinkProductState) {
+      return LinkProductWidget(
+        barcode: state.barcode,
+        onCancel: () {
+          bloc.continueShopping(products: state.products);
+        },
+        onLinked: ({required String barcode, required String productId}) {
+          bloc.barcodeFound(barcode: barcode, products: state.products);
+        },
+      );
+    }
+    return Container();
+  }
+}
+
 class ShoppingListWidget extends StatelessWidget {
   const ShoppingListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Dunnes')),
-      body: BlocProvider(
-        create: (_) => ShoppingListCubit()..init(),
-        child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
-          builder: (context, state) {
-            final bloc = BlocProvider.of<ShoppingListCubit>(context);
-            if (state is ShoppingState) {
-              return Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 150,
-                    child: FilteredMobileScannerWidget(
-                      onDetect: (barcode) {
-                        bloc.barcodeFound(
-                          barcode: barcode,
-                          products: state.products,
-                        );
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: state.products.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final product = state.products[index];
-                        return ListTile(
-                          title: Text("${product.name}"),
-                          leading: ClipOval(
-                            child: Image.network(product.imageUrl),
-                          ),
-                          trailing: Text(
-                            "€${product.price}",
-                            style: const TextStyle(fontSize: 32),
-                          ),
-                          onTap: () async {},
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return Divider(color: Colors.grey, height: 1);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            } else if (state is ProductFoundState) {
-              return ProductFoundWidget(
-                dunnesProduct: state.dunnesProduct,
-                onConfirm: (product) {
-                  bloc.confirmProduct(
-                    barcode: state.barcode,
-                    product: product,
-                    products: state.products,
-                  );
-                },
-                onReLink: () {
-                  bloc.reLinkProduct(
-                    barcode: state.barcode,
-                    products: state.products,
-                  );
-                },
-              );
-            } else if (state is ProductNotFoundState) {
-              return ProductNotFoundWidget(
-                barcodeNotFound: state.barcode,
-                onLinkBarcode: (barcode) {
-                  bloc.linkBarcode(barcode: barcode, products: state.products);
-                },
-                onContinue: () {
-                  bloc.continueShopping(products: state.products);
-                },
-              );
-            } else if (state is QueryingProductState) {
-              return Column(
-                children: [Text("Querying...", style: TextStyle(fontSize: 30))],
-              );
-            } else if (state is LinkProductState) {
-              return LinkProductWidget(
-                barcode: state.barcode,
-                onCancel: () {
-                  bloc.continueShopping(products: state.products);
-                },
-                onLinked: ({
-                  required String barcode,
-                  required String productId,
-                }) {
-                  bloc.barcodeFound(barcode: barcode, products: state.products);
-                },
-              );
-            }
-            return Container();
-          },
-        ),
-      ),
-      bottomSheet: Padding(
-        padding: EdgeInsets.only(
-          bottom:
-              MediaQuery.of(context).viewInsets.bottom +
-              MediaQuery.of(context).padding.bottom,
-        ),
-        child: ListTile(
-          title: Text("Total € 24.99", style: const TextStyle(fontSize: 32)),
-          leading: Icon(
-            Icons.calculate_rounded,
-            color: Colors.black,
-            size: 48.0,
-            semanticLabel: 'Text to announce in accessibility modes',
-          ),
-          onTap: () async {},
-        ),
+    return BlocProvider(
+      create: (_) => ShoppingListCubit()..init(),
+      child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
+        builder: (context, state) {
+          final bloc = BlocProvider.of<ShoppingListCubit>(context);
+          return Scaffold(
+            appBar: AppBar(title: const Text('Dunnes')),
+            body: MyWidget(loadedState: state, bloc: bloc),
+            bottomSheet: Padding(
+              padding: EdgeInsets.only(
+                bottom:
+                    MediaQuery.of(context).viewInsets.bottom +
+                    MediaQuery.of(context).padding.bottom,
+              ),
+              child: ListTile(
+                title: Text(
+                  "Total € ${state.products.map((p)=>p.price).fold(0.0, (a, b) => a + b)}",
+                  style: const TextStyle(fontSize: 32),
+                ),
+                leading: Icon(
+                  Icons.calculate_rounded,
+                  color: Colors.black,
+                  size: 48.0,
+                  semanticLabel: 'Text to announce in accessibility modes',
+                ),
+                onTap: () async {},
+              ),
+            ),
+          );
+        },
       ),
     );
   }
