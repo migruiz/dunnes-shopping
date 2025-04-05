@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import '../DunnesProductData.dart';
 
 class ProductFoundWidget extends StatelessWidget {
-  final DunnesProductData dunnesProduct;
+  final DunnesProductData product;
   final void Function(DunnesProductData) onConfirm;
   final void Function() onCancel;
 
 
-  const ProductFoundWidget({super.key, required this.dunnesProduct, required this.onConfirm, required this.onCancel});
+  const ProductFoundWidget({super.key, required this.product, required this.onConfirm, required this.onCancel});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.network(dunnesProduct.imageUrl),
-        Text(dunnesProduct.name, style: const TextStyle(fontSize: 20)),
+        Image.network(product.imageUrl),
+        Text(product.name, style: const TextStyle(fontSize: 20)),
         Text(
-          '€${dunnesProduct.price}',
+          '€${product.price}',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
         ),
         Row(
@@ -45,7 +45,7 @@ class ProductFoundWidget extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                onConfirm(dunnesProduct);
+                onConfirm(product);
               },
               child: Text(
                 'CONFIRM',

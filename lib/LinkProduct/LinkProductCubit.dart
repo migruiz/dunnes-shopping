@@ -41,7 +41,7 @@ class LinkProductCubit extends Cubit<LinkProductState> {
 
     emit(
       ProductFoundState(
-        dunnesProduct: DunnesProductData(
+        product: DunnesProductData(
           name: name,
           imageUrl: imageUrl,
           price: price,
@@ -51,11 +51,15 @@ class LinkProductCubit extends Cubit<LinkProductState> {
     );
   }
 
-  void linkProduct({required String barcode, required String productId}) async {
+  void linkProduct({required String barcode, required DunnesProductData dunnesProduct}) async {
     final db = FirebaseFirestore.instance;
     await db.collection("barcodes").doc(barcode).set({
-      "productId": productId,
+      "productId": dunnesProduct.productId,
+      "name": dunnesProduct.name,
+      "price": dunnesProduct.price,
+      "imageUrl": dunnesProduct.imageUrl,
+      "timestamp": FieldValue.serverTimestamp(),
     });
-    emit(LinkedState(barcode: barcode, productId: productId));
+    emit(LinkedState(barcode: barcode, productId: dunnesProduct.productId));
   }
 }

@@ -12,8 +12,8 @@ class InitState extends LinkProductState {
 }
 
 class ProductFoundState extends LinkProductState {
-  final DunnesProductData dunnesProduct;
-  ProductFoundState({required this.dunnesProduct});
+  final DunnesProductData product;
+  ProductFoundState({required this.product});
 }
 
 class LinkedState extends LinkProductState {

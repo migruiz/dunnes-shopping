@@ -78,9 +78,9 @@ class LinkProductWidget extends StatelessWidget {
           }
           else if (state is ProductFoundState) {
             return ProductFoundWidget(
-              dunnesProduct: state.dunnesProduct,
+              product: state.product,
               onConfirm: (product) {
-                bloc.linkProduct(barcode: barcode, productId: product.productId);
+                bloc.linkProduct(barcode: barcode, dunnesProduct: product);
               },
               onCancel: () {
                bloc.init(barcode: barcode);
