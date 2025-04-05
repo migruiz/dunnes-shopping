@@ -4,23 +4,27 @@ import 'package:dunnes_shopping/DunnesProductData.dart';
 
 abstract class ShoppingListState {}
 
-class ScanningState extends ShoppingListState {}
+class ScanningState extends ShoppingListState {
+  final List<DunnesProductData> products;
+  ScanningState({required this.products});
+}
 
 abstract class ScannedState extends ShoppingListState {
   final String barcode;
-  ScannedState({required this.barcode});
+  final List<DunnesProductData> products;
+  ScannedState({required this.barcode, required this.products});
 }
 
 class ProductNotFoundState extends ScannedState {
-  ProductNotFoundState({required super.barcode});
+  ProductNotFoundState({required super.barcode, required super.products});
 }
 
 class LinkProductState extends ScannedState {
-  LinkProductState({required super.barcode});
+  LinkProductState({required super.barcode, required super.products});
 }
 
 class QueryingProductState extends ScannedState {
-  QueryingProductState({required super.barcode});
+  QueryingProductState({required super.barcode, required super.products});
 }
 
 class ProductFoundState extends ScannedState {
@@ -28,5 +32,6 @@ class ProductFoundState extends ScannedState {
   ProductFoundState({
     required this.dunnesProduct,
     required super.barcode,
+    required super.products
   });
 }

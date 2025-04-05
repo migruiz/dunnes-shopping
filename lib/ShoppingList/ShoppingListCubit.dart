@@ -11,23 +11,26 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShoppingListCubit extends Cubit<ShoppingListState> {
-  ShoppingListCubit() : super(ScanningState());
+  ShoppingListCubit() : super(ScanningState(products: List.empty()));
 
   void init() async {
-    scanNewProduct();
+    emit(ScanningState(products: List.empty()));
   }
 
-  void scanNewProduct() async {
-    emit(ScanningState());
+  void continueShopping({required List<DunnesProductData> products}) async {
+    emit(ScanningState(products: products));
   }
 
-  void barcodeFound({required String barcode}) async {
-    emit(QueryingProductState(barcode: barcode));
+  void barcodeFound({
+    required String barcode,
+    required List<DunnesProductData> products,
+  }) async {
+    emit(QueryingProductState(barcode: barcode, products: products));
 
     final db = FirebaseFirestore.instance;
     final productResult = await db.collection("barcodes").doc(barcode).get();
     if (!productResult.exists) {
-      emit(ProductNotFoundState(barcode: barcode));
+      emit(ProductNotFoundState(barcode: barcode, products: products));
       return;
     }
     final productId = productResult.data()!["productId"];
@@ -52,21 +55,33 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     HapticFeedback.vibrate();
     emit(
       ProductFoundState(
-        dunnesProduct: DunnesProductData(name: name, imageUrl: imageUrl, price: price, productId: productId),
+        dunnesProduct: DunnesProductData(
+          name: name,
+          imageUrl: imageUrl,
+          price: price,
+          productId: productId,
+        ),
         barcode: barcode,
+        products: products,
       ),
     );
   }
 
-  void confirmProduct(String barcode, DunnesProductData product) {
-    emit(ScanningState());
+  void confirmProduct({
+    required barcode,
+    required List<DunnesProductData> products,
+    required DunnesProductData product,
+  }) {
+    final newList = List<DunnesProductData>.from(products);
+    newList.add(product);
+    emit(ScanningState(products: newList));
   }
 
-  void linkBarcode(String barcode) {
-    emit(LinkProductState(barcode:barcode ));
+  void linkBarcode({required  barcode, required List<DunnesProductData> products}) {
+    emit(LinkProductState(barcode: barcode, products: products));
   }
 
-  void reLinkProduct(String barcode) {
-    emit(LinkProductState(barcode:barcode ));
+  void reLinkProduct({required  barcode, required List<DunnesProductData> products}) {
+    emit(LinkProductState(barcode: barcode, products: products));
   }
 }

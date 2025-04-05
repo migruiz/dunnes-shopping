@@ -29,7 +29,10 @@ class ShoppingListWidget extends StatelessWidget {
                     height: 150,
                     child: FilteredMobileScannerWidget(
                       onDetect: (barcode) {
-                        bloc.barcodeFound(barcode: barcode);
+                        bloc.barcodeFound(
+                          barcode: barcode,
+                          products: state.products,
+                        );
                       },
                     ),
                   ),
@@ -39,20 +42,27 @@ class ShoppingListWidget extends StatelessWidget {
               return ProductFoundWidget(
                 dunnesProduct: state.dunnesProduct,
                 onConfirm: (product) {
-                  bloc.confirmProduct(state.barcode, product);
+                  bloc.confirmProduct(
+                    barcode: state.barcode,
+                    product: product,
+                    products: state.products,
+                  );
                 },
                 onReLink: () {
-                  bloc.reLinkProduct(state.barcode);
+                  bloc.reLinkProduct(
+                    barcode: state.barcode,
+                    products: state.products,
+                  );
                 },
               );
             } else if (state is ProductNotFoundState) {
               return ProductNotFoundWidget(
                 barcodeNotFound: state.barcode,
                 onLinkBarcode: (barcode) {
-                  bloc.linkBarcode(barcode);
+                  bloc.linkBarcode(barcode: barcode, products: state.products);
                 },
                 onContinue: () {
-                  bloc.scanNewProduct();
+                  bloc.continueShopping(products: state.products);
                 },
               );
             } else if (state is QueryingProductState) {
@@ -63,13 +73,13 @@ class ShoppingListWidget extends StatelessWidget {
               return LinkProductWidget(
                 barcode: state.barcode,
                 onCancel: () {
-                  bloc.scanNewProduct();
+                  bloc.continueShopping(products: state.products);
                 },
                 onLinked: ({
                   required String barcode,
                   required String productId,
                 }) {
-                  bloc.barcodeFound(barcode: barcode);
+                  bloc.barcodeFound(barcode: barcode, products: state.products);
                 },
               );
             }
@@ -80,19 +90,14 @@ class ShoppingListWidget extends StatelessWidget {
       bottomSheet: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: ListTile(
-          title: Text(
-            "Total € 24.99",
-            style: const TextStyle( fontSize: 32),
-          ),
+          title: Text("Total € 24.99", style: const TextStyle(fontSize: 32)),
           leading: Icon(
             Icons.calculate_rounded,
             color: Colors.black,
             size: 48.0,
             semanticLabel: 'Text to announce in accessibility modes',
           ),
-          onTap: () async {
-
-          },
+          onTap: () async {},
         ),
       ),
     );
