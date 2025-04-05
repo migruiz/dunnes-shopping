@@ -14,7 +14,11 @@ class ShoppingListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+
+
+return Scaffold(
+      appBar: AppBar(title: const Text('Dunnes')),
+      body: BlocProvider(
       create: (_) => ShoppingListCubit()..init(),
       child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
         builder: (context, state) {
@@ -71,7 +75,11 @@ class ShoppingListWidget extends StatelessWidget {
           return Container();
         },
       ),
+    ),
+      bottomSheet: Text("hola"),
     );
+
+    
   }
 }
 

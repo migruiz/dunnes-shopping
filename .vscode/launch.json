@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "food-diary",
+            "name": "dunnes",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "food-diary (profile mode)",
+            "name": "dunnes (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "food-diary (release mode)",
+            "name": "dunnes(release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
