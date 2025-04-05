@@ -4,9 +4,9 @@ import 'package:dunnes_shopping/DunnesProductData.dart';
 
 abstract class ShoppingListState {}
 
-class ScanningState extends ShoppingListState {
+class ShoppingState extends ShoppingListState {
   final List<DunnesProductData> products;
-  ScanningState({required this.products});
+  ShoppingState({required this.products});
 }
 
 abstract class ScannedState extends ShoppingListState {

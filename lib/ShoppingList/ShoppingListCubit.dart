@@ -11,14 +11,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShoppingListCubit extends Cubit<ShoppingListState> {
-  ShoppingListCubit() : super(ScanningState(products: List.empty()));
+  ShoppingListCubit() : super(ShoppingState(products: List.empty()));
 
   void init() async {
-    emit(ScanningState(products: List.empty()));
+    emit(ShoppingState(products: List.empty()));
   }
 
   void continueShopping({required List<DunnesProductData> products}) async {
-    emit(ScanningState(products: products));
+    emit(ShoppingState(products: products));
   }
 
   void barcodeFound({
@@ -74,7 +74,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }) {
     final newList = List<DunnesProductData>.from(products);
     newList.add(product);
-    emit(ScanningState(products: newList));
+    emit(ShoppingState(products: newList));
   }
 
   void linkBarcode({required  barcode, required List<DunnesProductData> products}) {

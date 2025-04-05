@@ -21,7 +21,7 @@ class ShoppingListWidget extends StatelessWidget {
         child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
           builder: (context, state) {
             final bloc = BlocProvider.of<ShoppingListCubit>(context);
-            if (state is ScanningState) {
+            if (state is ShoppingState) {
               return Column(
                 children: [
                   Container(
