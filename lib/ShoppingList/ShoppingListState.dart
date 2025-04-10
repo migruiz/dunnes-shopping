@@ -3,6 +3,7 @@
 import 'package:dunnes_shopping/DunnesProductData.dart';
 
 enum ShoppingListStateType {
+  initial,
   scanning,
   queryingBarcode,
   productNotFound,
@@ -12,8 +13,8 @@ enum ShoppingListStateType {
 
 class ShoppingListState {
   final ShoppingListStateType type;
-  final List<DunnesProductData> products;
-  final String shoppingDocumentId;
+  final List<DunnesProductData>? products;
+  final String? shoppingDocumentId;
 
   final String? scannedBarcode;
   final DunnesProductData? foundProduct;
@@ -25,6 +26,14 @@ class ShoppingListState {
     required this.scannedBarcode,
     required this.foundProduct,
   });
+
+  static ShoppingListState initial() => ShoppingListState(
+        type: ShoppingListStateType.initial,
+        shoppingDocumentId: null,
+        products: null,
+        scannedBarcode: null,
+        foundProduct: null
+      );
 
   ShoppingListState copyWith({
     required ShoppingListStateType type,

@@ -11,8 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShoppingListCubit extends Cubit<ShoppingListState> {
-  ShoppingListCubit()
-    : super(ShoppingState(products: List.empty(), shoppingDocumentId: ""));
+  ShoppingListCubit() : super(ShoppingListState.initial());
 
   void init() async {
     final db = FirebaseFirestore.instance;
@@ -32,37 +31,31 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       documentId = newDoc.id;
     }
 
-    emit(ShoppingState(products: List.empty(), shoppingDocumentId: documentId));
-  }
-
-  void continueShopping() async {
     emit(
-      ShoppingState(
-        products: state.products,
-        shoppingDocumentId: state.shoppingDocumentId,
+      state.copyWith(
+        type: ShoppingListStateType.scanning,
+        shoppingDocumentId: documentId,
+        products: List.empty(),
       ),
     );
   }
 
+  void continueShopping() async {
+    emit(state.copyWith(type: ShoppingListStateType.scanning));
+  }
+
   void barcodeFound({required String barcode}) async {
     emit(
-      QueryingProductState(
-        barcode: barcode,
-        products: state.products,
-        shoppingDocumentId: state.shoppingDocumentId,
+      state.copyWith(
+        type: ShoppingListStateType.queryingBarcode,
+        scannedBarcode: barcode,
       ),
     );
 
     final db = FirebaseFirestore.instance;
     final productResult = await db.collection("barcodes").doc(barcode).get();
     if (!productResult.exists) {
-      emit(
-        ProductNotFoundState(
-          barcode: barcode,
-          products: state.products,
-          shoppingDocumentId: state.shoppingDocumentId,
-        ),
-      );
+      emit(state.copyWith(type: ShoppingListStateType.productNotFound));
       return;
     }
     final productId = productResult.data()!["productId"];
@@ -86,48 +79,33 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
 
     HapticFeedback.vibrate();
     emit(
-      ProductFoundState(
-        dunnesProduct: DunnesProductData(
+      state.copyWith(
+        type: ShoppingListStateType.productFound,
+        foundProduct: DunnesProductData(
           name: name,
           imageUrl: imageUrl,
           price: price,
           productId: productId,
         ),
-        barcode: barcode,
-        products: state.products,
-        shoppingDocumentId: state.shoppingDocumentId,
       ),
     );
   }
 
-  void confirmProduct({required barcode, required DunnesProductData product}) {
-    final newList = List<DunnesProductData>.from(state.products);
+  void confirmProduct({required DunnesProductData product}) {
+    final newList = List<DunnesProductData>.from(state.products!);
     newList.add(product);
-    emit(
-      ShoppingState(
-        products: newList,
-        shoppingDocumentId: state.shoppingDocumentId,
-      ),
-    );
+     emit(state.copyWith(type: ShoppingListStateType.scanning, products: newList));
   }
 
   void linkBarcode({required barcode}) {
     emit(
-      LinkProductState(
-        barcode: barcode,
-        products: state.products,
-        shoppingDocumentId: state.shoppingDocumentId,
-      ),
+      state.copyWith(type: ShoppingListStateType.linkProduct, scannedBarcode: barcode)
     );
   }
 
-  void reLinkProduct({required barcode}) {
+  void reLinkProduct() {
     emit(
-      LinkProductState(
-        barcode: barcode,
-        products: state.products,
-        shoppingDocumentId: state.shoppingDocumentId,
-      ),
+      state.copyWith(type: ShoppingListStateType.linkProduct)
     );
   }
 }

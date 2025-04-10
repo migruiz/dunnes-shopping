@@ -9,15 +9,15 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../FilteredMobileScanner/FilteredMobileScannerWidget.dart';
 import 'ShoppingListCubit.dart';
 
-class MyWidget extends StatelessWidget {
+class BodyWidget extends StatelessWidget {
   final ShoppingListState loadedState;
   final ShoppingListCubit bloc;
 
-  const MyWidget({super.key, required this.loadedState, required this.bloc});
+  const BodyWidget({super.key, required this.loadedState, required this.bloc});
   @override
   Widget build(BuildContext context) {
     final state = loadedState;
-    if (state is ShoppingState) {
+    if (state.type == ShoppingListStateType.scanning) {
       return Column(
         children: [
           Container(
@@ -31,9 +31,9 @@ class MyWidget extends StatelessWidget {
           ),
           Expanded(
             child: ListView.separated(
-              itemCount: state.products.length,
+              itemCount: state.products!.length,
               itemBuilder: (BuildContext context, int index) {
-                final product = state.products[index];
+                final product = state.products![index];
                 return ListTile(
                   title: Text("${product.name}"),
                   leading: ClipOval(child: Image.network(product.imageUrl)),
@@ -51,22 +51,19 @@ class MyWidget extends StatelessWidget {
           ),
         ],
       );
-    } else if (state is ProductFoundState) {
+    } else if (state.type == ShoppingListStateType.productFound) {
       return ProductFoundWidget(
-        dunnesProduct: state.dunnesProduct,
+        dunnesProduct: state.foundProduct!,
         onConfirm: (product) {
-          bloc.confirmProduct(
-            barcode: state.barcode,
-            product: product,
-          );
+          bloc.confirmProduct(product: product);
         },
         onReLink: () {
-          bloc.reLinkProduct(barcode: state.barcode);
+          bloc.reLinkProduct();
         },
       );
-    } else if (state is ProductNotFoundState) {
+    } else if (state.type == ShoppingListStateType.productNotFound) {
       return ProductNotFoundWidget(
-        barcodeNotFound: state.barcode,
+        barcodeNotFound: state.scannedBarcode!,
         onLinkBarcode: (barcode) {
           bloc.linkBarcode(barcode: barcode);
         },
@@ -74,13 +71,13 @@ class MyWidget extends StatelessWidget {
           bloc.continueShopping();
         },
       );
-    } else if (state is QueryingProductState) {
+    } else if (state.type == ShoppingListStateType.queryingBarcode) {
       return Column(
         children: [Text("Querying...", style: TextStyle(fontSize: 30))],
       );
-    } else if (state is LinkProductState) {
+    } else if (state.type == ShoppingListStateType.linkProduct) {
       return LinkProductWidget(
-        barcode: state.barcode,
+        barcode: state.scannedBarcode!,
         onCancel: () {
           bloc.continueShopping();
         },
@@ -105,29 +102,46 @@ class ShoppingListWidget extends StatelessWidget {
           final bloc = BlocProvider.of<ShoppingListCubit>(context);
           return Scaffold(
             appBar: AppBar(title: const Text('Dunnes')),
-            body: MyWidget(loadedState: state, bloc: bloc),
-            bottomSheet: Padding(
-              padding: EdgeInsets.only(
-                bottom:
-                    MediaQuery.of(context).viewInsets.bottom +
-                    MediaQuery.of(context).padding.bottom,
-              ),
-              child: ListTile(
-                title: Text(
-                  "Total € ${state.products.map((p)=>p.price).fold(0.0, (a, b) => a + b)}",
-                  style: const TextStyle(fontSize: 32),
-                ),
-                leading: Icon(
-                  Icons.calculate_rounded,
-                  color: Colors.black,
-                  size: 48.0,
-                  semanticLabel: 'Text to announce in accessibility modes',
-                ),
-                onTap: () async {},
-              ),
-            ),
+            body: BodyWidget(loadedState: state, bloc: bloc),
+            bottomSheet: BottomWidget(loadedState: state),
           );
         },
+      ),
+    );
+  }
+}
+
+class BottomWidget extends StatelessWidget {
+  final ShoppingListState loadedState;
+  const BottomWidget({
+    required this.loadedState,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final state = loadedState;
+    if (state.type == ShoppingListStateType.initial) {
+      return Container();
+    }
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom:
+            MediaQuery.of(context).viewInsets.bottom +
+            MediaQuery.of(context).padding.bottom,
+      ),
+      child: ListTile(
+        title: Text(
+          "Total € ${state.products!.map((p) => p.price).fold(0.0, (a, b) => a + b)}",
+          style: const TextStyle(fontSize: 32),
+        ),
+        leading: Icon(
+          Icons.calculate_rounded,
+          color: Colors.black,
+          size: 48.0,
+          semanticLabel: 'Text to announce in accessibility modes',
+        ),
+        onTap: () async {},
       ),
     );
   }
