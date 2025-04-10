@@ -11,26 +11,58 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShoppingListCubit extends Cubit<ShoppingListState> {
-  ShoppingListCubit() : super(ShoppingState(products: List.empty()));
+  ShoppingListCubit()
+    : super(ShoppingState(products: List.empty(), shoppingDocumentId: ""));
 
   void init() async {
-    emit(ShoppingState(products: List.empty()));
+    final db = FirebaseFirestore.instance;
+    final lists = db.collection("shoppinglists");
+
+    final querySnapshot =
+        await lists.where('archived', isEqualTo: false).limit(1).get();
+
+    final String documentId;
+    if (querySnapshot.docs.isNotEmpty) {
+      documentId = querySnapshot.docs.first.id;
+    } else {
+      final newDoc = await lists.add({
+        "archived": false,
+        "date": DateTime.now(),
+      });
+      documentId = newDoc.id;
+    }
+
+    emit(ShoppingState(products: List.empty(), shoppingDocumentId: documentId));
   }
 
-  void continueShopping({required List<DunnesProductData> products}) async {
-    emit(ShoppingState(products: products));
+  void continueShopping() async {
+    emit(
+      ShoppingState(
+        products: state.products,
+        shoppingDocumentId: state.shoppingDocumentId,
+      ),
+    );
   }
 
-  void barcodeFound({
-    required String barcode,
-    required List<DunnesProductData> products,
-  }) async {
-    emit(QueryingProductState(barcode: barcode, products: products));
+  void barcodeFound({required String barcode}) async {
+    emit(
+      QueryingProductState(
+        barcode: barcode,
+        products: state.products,
+        shoppingDocumentId: state.shoppingDocumentId,
+      ),
+    );
 
     final db = FirebaseFirestore.instance;
     final productResult = await db.collection("barcodes").doc(barcode).get();
     if (!productResult.exists) {
-      emit(ProductNotFoundState(barcode: barcode, products: products));
+      emit(
+        ProductNotFoundState(
+          barcode: barcode,
+          products: state.products,
+          shoppingDocumentId: state.shoppingDocumentId,
+        ),
+      );
       return;
     }
     final productId = productResult.data()!["productId"];
@@ -62,26 +94,40 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
           productId: productId,
         ),
         barcode: barcode,
-        products: products,
+        products: state.products,
+        shoppingDocumentId: state.shoppingDocumentId,
       ),
     );
   }
 
-  void confirmProduct({
-    required barcode,
-    required List<DunnesProductData> products,
-    required DunnesProductData product,
-  }) {
-    final newList = List<DunnesProductData>.from(products);
+  void confirmProduct({required barcode, required DunnesProductData product}) {
+    final newList = List<DunnesProductData>.from(state.products);
     newList.add(product);
-    emit(ShoppingState(products: newList));
+    emit(
+      ShoppingState(
+        products: newList,
+        shoppingDocumentId: state.shoppingDocumentId,
+      ),
+    );
   }
 
-  void linkBarcode({required  barcode, required List<DunnesProductData> products}) {
-    emit(LinkProductState(barcode: barcode, products: products));
+  void linkBarcode({required barcode}) {
+    emit(
+      LinkProductState(
+        barcode: barcode,
+        products: state.products,
+        shoppingDocumentId: state.shoppingDocumentId,
+      ),
+    );
   }
 
-  void reLinkProduct({required  barcode, required List<DunnesProductData> products}) {
-    emit(LinkProductState(barcode: barcode, products: products));
+  void reLinkProduct({required barcode}) {
+    emit(
+      LinkProductState(
+        barcode: barcode,
+        products: state.products,
+        shoppingDocumentId: state.shoppingDocumentId,
+      ),
+    );
   }
 }

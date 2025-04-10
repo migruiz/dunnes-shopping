@@ -25,7 +25,7 @@ class MyWidget extends StatelessWidget {
             height: 150,
             child: FilteredMobileScannerWidget(
               onDetect: (barcode) {
-                bloc.barcodeFound(barcode: barcode, products: state.products);
+                bloc.barcodeFound(barcode: barcode);
               },
             ),
           ),
@@ -58,21 +58,20 @@ class MyWidget extends StatelessWidget {
           bloc.confirmProduct(
             barcode: state.barcode,
             product: product,
-            products: state.products,
           );
         },
         onReLink: () {
-          bloc.reLinkProduct(barcode: state.barcode, products: state.products);
+          bloc.reLinkProduct(barcode: state.barcode);
         },
       );
     } else if (state is ProductNotFoundState) {
       return ProductNotFoundWidget(
         barcodeNotFound: state.barcode,
         onLinkBarcode: (barcode) {
-          bloc.linkBarcode(barcode: barcode, products: state.products);
+          bloc.linkBarcode(barcode: barcode);
         },
         onContinue: () {
-          bloc.continueShopping(products: state.products);
+          bloc.continueShopping();
         },
       );
     } else if (state is QueryingProductState) {
@@ -83,10 +82,10 @@ class MyWidget extends StatelessWidget {
       return LinkProductWidget(
         barcode: state.barcode,
         onCancel: () {
-          bloc.continueShopping(products: state.products);
+          bloc.continueShopping();
         },
         onLinked: ({required String barcode, required String productId}) {
-          bloc.barcodeFound(barcode: barcode, products: state.products);
+          bloc.barcodeFound(barcode: barcode);
         },
       );
     }
