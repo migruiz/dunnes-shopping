@@ -8,9 +8,9 @@ enum ShoppingListStateType {
   initial,
   scanning,
   queryingBarcode,
-  productNotFound,
+  dunnesProductNotFound,
   linkProduct,
-  productFound,
+  dunnesProductFound,
 }
 
 class ShoppingListState {
@@ -19,14 +19,14 @@ class ShoppingListState {
   final String? shoppingDocumentId;
 
   final String? scannedBarcode;
-  final DunnesProductData? dunnesFoundProduct;
+  final DunnesProductData? foundDunnesProduct;
 
   ShoppingListState({
     required this.type,
     required this.shoppingDocumentId,
     required this.products,
     required this.scannedBarcode,
-    required this.dunnesFoundProduct,
+    required this.foundDunnesProduct,
   });
 
   static ShoppingListState initial() => ShoppingListState(
@@ -34,7 +34,7 @@ class ShoppingListState {
         shoppingDocumentId: null,
         products: null,
         scannedBarcode: null,
-        dunnesFoundProduct: null
+        foundDunnesProduct: null
       );
 
   ShoppingListState copyWith({
@@ -48,6 +48,6 @@ class ShoppingListState {
     shoppingDocumentId: shoppingDocumentId ?? this.shoppingDocumentId,
     products: products ?? this.products,
     scannedBarcode: scannedBarcode ?? this.scannedBarcode,
-    dunnesFoundProduct: dunnesFoundProduct ?? this.dunnesFoundProduct,
+    foundDunnesProduct: dunnesFoundProduct ?? this.foundDunnesProduct,
   );
 }

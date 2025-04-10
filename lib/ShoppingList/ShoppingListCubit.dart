@@ -56,7 +56,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     final db = FirebaseFirestore.instance;
     final productResult = await db.collection("barcodes").doc(barcode).get();
     if (!productResult.exists) {
-      emit(state.copyWith(type: ShoppingListStateType.productNotFound));
+      emit(state.copyWith(type: ShoppingListStateType.dunnesProductNotFound));
       return;
     }
     final productId = productResult.data()!["productId"];
@@ -81,7 +81,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     HapticFeedback.vibrate();
     emit(
       state.copyWith(
-        type: ShoppingListStateType.productFound,
+        type: ShoppingListStateType.dunnesProductFound,
         dunnesFoundProduct: DunnesProductData(
           name: name,
           imageUrl: imageUrl,

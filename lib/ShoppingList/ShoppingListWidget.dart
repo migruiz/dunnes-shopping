@@ -55,9 +55,9 @@ class BodyWidget extends StatelessWidget {
       return Column(
         children: [Text("Querying...", style: TextStyle(fontSize: 30))],
       );
-    }else if (state.type == ShoppingListStateType.productFound) {
+    }else if (state.type == ShoppingListStateType.dunnesProductFound) {
       return ProductFoundWidget(
-        dunnesProduct: state.dunnesFoundProduct!,
+        dunnesProduct: state.foundDunnesProduct!,
         onConfirm: (product) {
           bloc.confirmProduct(product: product);
         },
@@ -65,7 +65,7 @@ class BodyWidget extends StatelessWidget {
           bloc.reLinkProduct();
         },
       );
-    } else if (state.type == ShoppingListStateType.productNotFound) {
+    } else if (state.type == ShoppingListStateType.dunnesProductNotFound) {
       return ProductNotFoundWidget(
         barcodeNotFound: state.scannedBarcode!,
         onLinkBarcode: (barcode) {
