@@ -51,7 +51,11 @@ class BodyWidget extends StatelessWidget {
           ),
         ],
       );
-    } else if (state.type == ShoppingListStateType.productFound) {
+    } else if (state.type == ShoppingListStateType.queryingBarcode) {
+      return Column(
+        children: [Text("Querying...", style: TextStyle(fontSize: 30))],
+      );
+    }else if (state.type == ShoppingListStateType.productFound) {
       return ProductFoundWidget(
         dunnesProduct: state.foundProduct!,
         onConfirm: (product) {
@@ -70,10 +74,6 @@ class BodyWidget extends StatelessWidget {
         onContinue: () {
           bloc.continueShopping();
         },
-      );
-    } else if (state.type == ShoppingListStateType.queryingBarcode) {
-      return Column(
-        children: [Text("Querying...", style: TextStyle(fontSize: 30))],
       );
     } else if (state.type == ShoppingListStateType.linkProduct) {
       return LinkProductWidget(
