@@ -2,38 +2,41 @@
 
 import 'package:dunnes_shopping/DunnesProductData.dart';
 
-abstract class ShoppingListState {
+enum ShoppingListStateType {
+  scanning,
+  queryingBarcode,
+  productNotFound,
+  linkProduct,
+  productFound,
+}
+
+class ShoppingListState {
+  final ShoppingListStateType type;
   final List<DunnesProductData> products;
   final String shoppingDocumentId;
-  ShoppingListState({required this.shoppingDocumentId, required this.products});
-}
 
-class ShoppingState extends ShoppingListState {
-  ShoppingState({required super.products, required super.shoppingDocumentId});
-}
+  final String? scannedBarcode;
+  final DunnesProductData? foundProduct;
 
-abstract class ScannedState extends ShoppingListState {
-  final String barcode;
-  ScannedState({required this.barcode, required super.products, required super.shoppingDocumentId});
-}
+  ShoppingListState({
+    required this.type,
+    required this.shoppingDocumentId,
+    required this.products,
+    required this.scannedBarcode,
+    required this.foundProduct,
+  });
 
-class ProductNotFoundState extends ScannedState {
-  ProductNotFoundState({required super.barcode, required super.products, required super.shoppingDocumentId});
-}
-
-class LinkProductState extends ScannedState {
-  LinkProductState({required super.barcode, required super.products, required super.shoppingDocumentId});
-}
-
-class QueryingProductState extends ScannedState {
-  QueryingProductState({required super.barcode, required super.products, required super.shoppingDocumentId});
-}
-
-class ProductFoundState extends ScannedState {
-  final DunnesProductData dunnesProduct;
-  ProductFoundState({
-    required this.dunnesProduct,
-    required super.barcode,
-    required super.products
-  , required super.shoppingDocumentId});
+  ShoppingListState copyWith({
+    required ShoppingListStateType type,
+    String? shoppingDocumentId,
+    List<DunnesProductData>? products,
+    String? scannedBarcode,
+    DunnesProductData? foundProduct,
+  }) => ShoppingListState(
+    type: type,
+    shoppingDocumentId: shoppingDocumentId ?? this.shoppingDocumentId,
+    products: products ?? this.products,
+    scannedBarcode: scannedBarcode ?? this.scannedBarcode,
+    foundProduct: foundProduct ?? this.foundProduct,
+  );
 }
