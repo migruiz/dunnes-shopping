@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
-import 'package:dunnes_shopping/DunnesProductData.dart';
+import './ShoppingListProductData.dart';
+
+import '../DunnesProductData.dart';
 
 enum ShoppingListStateType {
   initial,
@@ -13,18 +15,18 @@ enum ShoppingListStateType {
 
 class ShoppingListState {
   final ShoppingListStateType type;
-  final List<DunnesProductData>? products;
+  final List<ShoppingListProductData>? products;
   final String? shoppingDocumentId;
 
   final String? scannedBarcode;
-  final DunnesProductData? foundProduct;
+  final DunnesProductData? dunnesFoundProduct;
 
   ShoppingListState({
     required this.type,
     required this.shoppingDocumentId,
     required this.products,
     required this.scannedBarcode,
-    required this.foundProduct,
+    required this.dunnesFoundProduct,
   });
 
   static ShoppingListState initial() => ShoppingListState(
@@ -32,20 +34,20 @@ class ShoppingListState {
         shoppingDocumentId: null,
         products: null,
         scannedBarcode: null,
-        foundProduct: null
+        dunnesFoundProduct: null
       );
 
   ShoppingListState copyWith({
     required ShoppingListStateType type,
     String? shoppingDocumentId,
-    List<DunnesProductData>? products,
+    List<ShoppingListProductData>? products,
     String? scannedBarcode,
-    DunnesProductData? foundProduct,
+    DunnesProductData? dunnesFoundProduct,
   }) => ShoppingListState(
     type: type,
     shoppingDocumentId: shoppingDocumentId ?? this.shoppingDocumentId,
     products: products ?? this.products,
     scannedBarcode: scannedBarcode ?? this.scannedBarcode,
-    foundProduct: foundProduct ?? this.foundProduct,
+    dunnesFoundProduct: dunnesFoundProduct ?? this.dunnesFoundProduct,
   );
 }

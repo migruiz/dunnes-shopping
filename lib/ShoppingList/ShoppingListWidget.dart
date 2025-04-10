@@ -57,7 +57,7 @@ class BodyWidget extends StatelessWidget {
       );
     }else if (state.type == ShoppingListStateType.productFound) {
       return ProductFoundWidget(
-        dunnesProduct: state.foundProduct!,
+        dunnesProduct: state.dunnesFoundProduct!,
         onConfirm: (product) {
           bloc.confirmProduct(product: product);
         },

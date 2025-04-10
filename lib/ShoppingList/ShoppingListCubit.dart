@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:dunnes_shopping/DunnesProductData.dart';
+import 'package:dunnes_shopping/ShoppingList/ShoppingListProductData.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -81,7 +82,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     emit(
       state.copyWith(
         type: ShoppingListStateType.productFound,
-        foundProduct: DunnesProductData(
+        dunnesFoundProduct: DunnesProductData(
           name: name,
           imageUrl: imageUrl,
           price: price,
@@ -92,8 +93,8 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }
 
   void confirmProduct({required DunnesProductData product}) {
-    final newList = List<DunnesProductData>.from(state.products!);
-    newList.add(product);
+    final newList = List<ShoppingListProductData>.from(state.products!);
+    newList.add(ShoppingListProductData(name: product.name, imageUrl: product.imageUrl, price: product.price));
      emit(state.copyWith(type: ShoppingListStateType.scanning, products: newList));
   }
 
