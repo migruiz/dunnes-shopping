@@ -33,11 +33,14 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       documentId = newDoc.id;
     }
 
+    final productsSnapshot = await lists.doc(documentId).collection("items").get();
+    final products = productsSnapshot.docs.map((doc) => ShoppingListProductData(name: doc['name'], imageUrl: doc['imageUrl'], price: doc['price'])).toList();
+
     emit(
       state.copyWith(
         type: ShoppingListStateType.scanning,
         shoppingDocumentId: documentId,
-        products: List.empty(),
+        products: products,
       ),
     );
   }
