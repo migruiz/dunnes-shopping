@@ -28,6 +28,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       final newDoc = await lists.add({
         "archived": false,
         "date": DateTime.now(),
+        "timestamp": FieldValue.serverTimestamp(),
       });
       documentId = newDoc.id;
     }
@@ -92,21 +93,40 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     );
   }
 
-  void confirmProduct({required DunnesProductData product}) {
+  void confirmProduct({required DunnesProductData product}) async {
+    final shoppingProduct = ShoppingListProductData(
+      name: product.name,
+      imageUrl: product.imageUrl,
+      price: product.price,
+    );
+    final db = FirebaseFirestore.instance;
+    await db
+        .collection("shoppinglists")
+        .doc(state.shoppingDocumentId!)
+        .collection("items")
+        .doc()
+        .set({
+          "name": shoppingProduct.name,
+          "price": shoppingProduct.price,
+          "imageUrl": shoppingProduct.imageUrl,          
+        });
     final newList = List<ShoppingListProductData>.from(state.products!);
-    newList.add(ShoppingListProductData(name: product.name, imageUrl: product.imageUrl, price: product.price));
-     emit(state.copyWith(type: ShoppingListStateType.scanning, products: newList));
+    newList.add(shoppingProduct);
+    emit(
+      state.copyWith(type: ShoppingListStateType.scanning, products: newList),
+    );
   }
 
   void linkBarcode({required barcode}) {
     emit(
-      state.copyWith(type: ShoppingListStateType.linkProduct, scannedBarcode: barcode)
+      state.copyWith(
+        type: ShoppingListStateType.linkProduct,
+        scannedBarcode: barcode,
+      ),
     );
   }
 
   void reLinkProduct() {
-    emit(
-      state.copyWith(type: ShoppingListStateType.linkProduct)
-    );
+    emit(state.copyWith(type: ShoppingListStateType.linkProduct));
   }
 }
