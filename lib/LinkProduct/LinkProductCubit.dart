@@ -30,7 +30,7 @@ class LinkProductCubit extends Cubit<LinkProductState> {
 
     final response = await http.get(
       Uri.parse(
-        'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/258/preview?q=$productId',
+        'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/256/preview?q=$productId',
       ),
     );
 

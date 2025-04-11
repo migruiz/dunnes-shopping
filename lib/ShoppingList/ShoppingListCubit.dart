@@ -69,7 +69,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     final results = await Future.wait([
       http.get(
         Uri.parse(
-          'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/258/preview?q=$productId',
+          'https://storefrontgateway.dunnesstoresgrocery.com/api/stores/256/preview?q=$productId',
         ),
       ),
       player.play(UrlSource('https://www.soundjay.com/buttons/beep-01a.wav')),

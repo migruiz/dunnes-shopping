@@ -41,7 +41,7 @@ class LinkProductWidget extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     await launchUrl(
-                      Uri.parse('https://www.dunnesstoresgrocery.com/sm/delivery/rsid/258/'),
+                      Uri.parse('https://www.dunnesstoresgrocery.com/sm/delivery/rsid/256/'),
                     );
                   },
                   child: Text('Search Dunnes Database'),
